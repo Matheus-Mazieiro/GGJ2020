@@ -32,4 +32,10 @@ public class Hole : MonoBehaviour
     {
         hp = startingHp;
     }
+
+    public void Openned() // Chamar no animation event quando o buraco abrir
+    {
+        isOpen = true;
+    }
+
 }

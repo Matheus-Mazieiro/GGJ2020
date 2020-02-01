@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.layer == 8)
         {
+            myBigidbody.velocity = new Vector3(myBigidbody.velocity.x, 0, 0);
             isAtStair = true;
             myBigidbody.useGravity = false;
         }
