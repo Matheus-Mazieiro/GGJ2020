@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     public AnimController animCtrl;
 
     Door hoverDoor;
+    public GameObject walk;
+
+    public Door[] portas;
 
 
     void Start()
@@ -55,28 +58,59 @@ public class Player : MonoBehaviour
             animCtrl.PlayAnim(3);
         else if (flushing)
         {
-            Debug.Log("Flushing");
             animCtrl.PlayAnim(2);
         }
         else if (walking)
+        {
             animCtrl.PlayAnim(1);
+            walk.transform.eulerAngles = new Vector3(0, -90f * Input.GetAxis("Horizontal") - 90, 0);
+        }
         else if (climbing)
+        {
             animCtrl.PlayAnim(5);
+            walk.transform.eulerAngles = new Vector3(0, 0, 0);
+        }
         else
+        {
             animCtrl.PlayAnim(0);
+            walk.transform.eulerAngles = new Vector3(0, 0, 0);
+        }
 
         if (!isUnderWater && folego <= 10)
             folego += Time.deltaTime * 2;
 
+        print("isAtDoorTrigger: " + isAtDoorTrigger + " |hoverDoor: " + hoverDoor);
 
+        /*
         if (isAtDoorTrigger)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && hoverDoor)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (hoverDoor.isOpen)
-                    hoverDoor.isOpen = false;
-                else hoverDoor.isOpen = true;
-                hoverDoor.col.enabled = hoverDoor.isOpen;
+                print("apertou espaço");
+                if (hoverDoor)
+                {
+                    if (hoverDoor.isOpen)
+                        hoverDoor.isOpen = false;
+                    else hoverDoor.isOpen = true;
+                    hoverDoor.col.enabled = hoverDoor.isOpen;
+                }
+            }
+        }
+        */
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            for (int i = 0; i < portas.Length; i++)
+            {
+                if (Vector3.Distance(transform.position, portas[i].transform.position) <= 5)
+                {
+                    if (hoverDoor)
+                    {
+                        if (hoverDoor.isOpen)
+                            hoverDoor.isOpen = false;
+                        else hoverDoor.isOpen = true;
+                        hoverDoor.col.enabled = hoverDoor.isOpen;
+                    }
+                }
             }
         }
     }
@@ -120,7 +154,8 @@ public class Player : MonoBehaviour
         if (other.gameObject.layer == 10)
         {
             isUnderWater = true;
-            redutor = speed * .7f;
+            if (other.transform.parent.GetComponent<Water>() && other.transform.parent.GetComponent<Water>().fillAmount >= 30)
+                redutor = speed * .7f;
             if (other.transform.parent.GetComponent<Water>() && other.transform.parent.GetComponent<Water>().fillAmount >= 80)
             { 
                 folego -= Time.deltaTime;
