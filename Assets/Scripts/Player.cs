@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
         if (!isUnderWater && folego <= 10)
             folego += Time.deltaTime * 2;
 
-        print("isAtDoorTrigger: " + isAtDoorTrigger + " |hoverDoor: " + hoverDoor);
+        //print("isAtDoorTrigger: " + isAtDoorTrigger + " |hoverDoor: " + hoverDoor);
 
         /*
         if (isAtDoorTrigger)
@@ -131,11 +131,11 @@ public class Player : MonoBehaviour
             hole = other.gameObject.GetComponent<Hole>();
         }
 
-        if (other.gameObject.layer == 12)
-        {
-            hoverDoor = other.GetComponent<Door>();
-            isAtDoorTrigger = true;
-        }
+        //if (other.gameObject.layer == 12)
+        //{
+        //    hoverDoor = other.GetComponent<Door>();
+        //    isAtDoorTrigger = true;
+        //}
     }
 
     private void OnTriggerStay(Collider other)
@@ -211,10 +211,10 @@ public class Player : MonoBehaviour
             redutor = 0;
             isUnderWater = false;
         }
-        if (other.gameObject.layer == 12)
-        {
-            hoverDoor = null;
-            isAtDoorTrigger = true;
-        }
+        //if (other.gameObject.layer == 12)
+        //{
+        //    hoverDoor = null;
+        //    isAtDoorTrigger = true;
+        //}
     }
 }
