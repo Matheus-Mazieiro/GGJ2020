@@ -688,6 +688,7 @@ MonoBehaviour:
   - {fileID: 897320608}
   - {fileID: 1018314496}
   timePerHole: 10
+  buracosAbertos: 0
 --- !u!4 &221664876
 Transform:
   m_ObjectHideFlags: 0
@@ -1065,7 +1066,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_1
+      value: Hole_1_3
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -2897,7 +2898,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_2
+      value: Hole_2_3
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -3356,7 +3357,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_0
+      value: Hole_0_4
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -4059,7 +4060,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_1
+      value: Hole_1_4
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -4732,7 +4733,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_2
+      value: Hole_2_4
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -5039,7 +5040,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_3
+      value: Hole_3_3
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -6424,11 +6425,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: d64bf211d3d75a24b88dd43bff93e924,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8986c261cf63c874bb4f798a040e426c, type: 2}
     - target: {fileID: -4216859302048453862, guid: d64bf211d3d75a24b88dd43bff93e924,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6484,6 +6480,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: d64bf211d3d75a24b88dd43bff93e924,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 8986c261cf63c874bb4f798a040e426c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d64bf211d3d75a24b88dd43bff93e924, type: 3}
 --- !u!1001 &1627536632
@@ -7424,7 +7425,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_0
+      value: Hole_0_2
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -7891,7 +7892,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_1
+      value: Hole_1_2
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -8378,7 +8379,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_2
+      value: Hole_2_2
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
@@ -8555,7 +8556,7 @@ PrefabInstance:
     - target: {fileID: 2060352509762197052, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_Name
-      value: Hole_0
+      value: Hole_0_3
       objectReference: {fileID: 0}
     - target: {fileID: 2060352509762197043, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
