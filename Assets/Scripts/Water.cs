@@ -24,6 +24,15 @@ public class Water : MonoBehaviour
 
     public float fillAmount;
     public Dor[] dores;
+    float auxDiff;
+
+    int maxSameFrameLoop = 10;
+    int loopCount = 0;
+
+    private void LateUpdate()
+    {
+        loopCount = 0;
+    }
 
     void FixedUpdate()
     {
@@ -43,7 +52,15 @@ public class Water : MonoBehaviour
 
     public void FillWater(float amount)
     {
+
         fillAmount += amount;
+
+        if(++loopCount >= maxSameFrameLoop)
+        {
+            //Debug.Log("Last minute crash prevention system...");
+            return;
+        }
+
         if (fillAmount > 0)
         {
             for (int i = 0; i < dores.Length; i++)
@@ -59,23 +76,47 @@ public class Water : MonoBehaviour
                             if (dores[i].water.fillAmount <= 95)
                                 over = fillAmount * .1f;
                             dores[i].water.FillWater(over);
+
                             fillAmount -= over;
+                            dores[i].water.FillWater(over);
                         }
                         break;
                     case Dor.Side.RIGHT:
                         if (dores[i].door.isOpen && dores[i].water.fillAmount < fillAmount)
                         {
-                            over = (fillAmount - dores[i].water.fillAmount) * .25f;
-                            dores[i].water.FillWater(over);
+                            auxDiff = (fillAmount - dores[i].water.fillAmount);
+
+                            over = auxDiff * .25f;
+                            if (dores[i].water.fillAmount + over > fillAmount - over &&
+                                dores[i].water.fillAmount - over > fillAmount + over
+                            )
+                            {
+                                Debug.Log("Possibly prevented stack overflow on right side.");
+                                //Debug.Break();
+                                over = (dores[i].water.fillAmount + over) / 2f;
+                            }
+
                             fillAmount -= over;
+                            dores[i].water.FillWater(over);
                         }
                         break;
                     case Dor.Side.LEFT:
                         if (dores[i].door.isOpen && dores[i].water.fillAmount < fillAmount)
                         {
-                            over = (fillAmount - dores[i].water.fillAmount) * .25f;
-                            dores[i].water.FillWater(over);
+                            auxDiff = (fillAmount - dores[i].water.fillAmount);
+                            over = auxDiff * .25f;
+
+                            if (dores[i].water.fillAmount + over > fillAmount - over &&
+                                dores[i].water.fillAmount - over > fillAmount + over
+                                )
+                            {
+                                Debug.Log("Possibly prevented stack overflow on left side.");
+                                over = (dores[i].water.fillAmount + over) / 2f;
+                                //Debug.Break();
+                            }
+
                             fillAmount -= over;
+                            dores[i].water.FillWater(over);
                         }
                         break;
                     case Dor.Side.UP:
@@ -84,8 +125,8 @@ public class Water : MonoBehaviour
                             if (dores[i].direction == Dor.Side.UP && dores[i].water.fillAmount < 95)
                             {
                                 over = (fillAmount - 100);
-                                dores[i].water.FillWater(over);
                                 fillAmount -= over;
+                                dores[i].water.FillWater(over);
                             }
                         }
                         break;
