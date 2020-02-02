@@ -38,14 +38,19 @@ public class Player : MonoBehaviour
     [Header("Callbacks")]
     [SerializeField] UnityEvent onPlayerDead;
 
+    bool isDying = false;
+
     void Start()
     {
         myBigidbody = GetComponent<Rigidbody>();
+        //Time.timeScale = 10f;
         //StartCoroutine(GoToMenu());
     }
 
     void FixedUpdate()
     {
+        if (isDying) { return; }
+
         transform.position = new Vector3(transform.position.x, transform.position.y, 8.85f);
         float speedY = 0;
         if (isAtStair && !walking)
@@ -236,10 +241,17 @@ public class Player : MonoBehaviour
 
     public IEnumerator GoToMenu()
     {
+        if (isDying)
+        {
+            yield break;
+        }
+
+        isDying = true;
         FindObjectOfType<CanvasController>().SaveRecordIfBigger();
         FindObjectOfType<CanvasController>().RefreshRecord() ;
         speed = 0;
         stairSpeed = 0;
+        Time.timeScale = 1;
         yield return new WaitForSeconds(5);
         onPlayerDead?.Invoke();
         FindObjectOfType<ScenesManager>().LoadMainMenu();
