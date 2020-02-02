@@ -10,6 +10,7 @@ public class Hole : MonoBehaviour
     float startingHp;
     public float fillRatio = 1;
     public Water water;
+    public HoleManager holeManager;
 
     public UnityEvent StartOpenProcessEvent = new UnityEvent();
 
@@ -30,7 +31,12 @@ public class Hole : MonoBehaviour
     {
         this.hp -= hp;
         if (this.hp <= 0)
-            Destroy(this.gameObject);
+        {
+            //Destroy(this.gameObject);
+            openProcess = false;
+            transform.GetChild(0).gameObject.SetActive(false);
+            holeManager.buracosAbertos--;
+        }
     }
 
     public void RezetHP()

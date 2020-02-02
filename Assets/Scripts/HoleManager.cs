@@ -7,6 +7,7 @@ public class HoleManager : MonoBehaviour
     public static HoleManager instance;
     public Hole[] holes;
     public float timePerHole;
+    public int buracosAbertos = 0;
 
     float count;
 
@@ -23,21 +24,24 @@ public class HoleManager : MonoBehaviour
     public void CreateNewHole()
     {
         int index =  Random.Range(0, holes.Length - 1);
-
-        for (int i = 0; i < holes.Length; i++)
+        buracosAbertos++;
+        if(buracosAbertos < holes.Length)
         {
-            if (index == i)
+            for (int i = 0; i < holes.Length; i++)
             {
-                if (holes[i].isOpen || holes[i].openProcess)
+                if (index == i)
                 {
-                    CreateNewHole();
-                    return;
-                }
-                else
-                {
-                    holes[i].openProcess = true;
-                    holes[i].StartOpenProcessEvent.Invoke();
-                    return;
+                    if (holes[i].isOpen || holes[i].openProcess)
+                    {
+                        CreateNewHole();
+                        return;
+                    }
+                    else
+                    {
+                        holes[i].openProcess = true;
+                        holes[i].StartOpenProcessEvent.Invoke();
+                        return;
+                    }
                 }
             }
         }
