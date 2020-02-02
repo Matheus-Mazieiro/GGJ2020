@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -692,7 +692,7 @@ MonoBehaviour:
   - {fileID: 786862191}
   - {fileID: 897320608}
   - {fileID: 1018314496}
-  timePerHole: 10
+  timePerHole: 20
   buracosAbertos: 0
 --- !u!4 &221664876
 Transform:
@@ -1183,6 +1183,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 1914469216}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -1505,6 +1510,11 @@ MonoBehaviour:
   - {fileID: 14959993}
   step: {fileID: 8300000, guid: 2308b8b2fe7234049a7e8765c3e41acd, type: 3}
   waterStep: {fileID: 8300000, guid: 091c24fd39dee1947b3ba8d98bcee73a, type: 3}
+  onPlayerDead:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!54 &397968478
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3112,6 +3122,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 1914469216}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -3571,6 +3586,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 2141800869}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -4274,6 +4294,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 537739142}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -5066,6 +5091,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 537739142}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -5373,6 +5403,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 691710063}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -7506,6 +7541,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 2020830333}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -7914,6 +7954,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 1606706539}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -8381,6 +8426,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 1676627611}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -8868,6 +8918,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 1933110614}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -9045,6 +9100,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 1436041864}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     m_RemovedComponents:
     - {fileID: 0}
     - {fileID: 0}
@@ -9675,6 +9735,11 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 1571648946}
+    - target: {fileID: 5609898223771136998, guid: b2044c71c865b68429b6efe697f98e89,
+        type: 3}
+      propertyPath: holeManager
+      value: 
+      objectReference: {fileID: 221664875}
     - target: {fileID: 3513969878070445405, guid: b2044c71c865b68429b6efe697f98e89,
         type: 3}
       propertyPath: m_IsActive

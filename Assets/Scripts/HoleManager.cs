@@ -11,13 +11,18 @@ public class HoleManager : MonoBehaviour
 
     float count;
 
+    private void Start()
+    {
+        CreateNewHole();
+    }
+
     private void Update()
     {
         count += Time.deltaTime;
         if(count >= timePerHole)
         {
             count = 0;
-            //CreateNewHole();
+            CreateNewHole();
         }
     }
 

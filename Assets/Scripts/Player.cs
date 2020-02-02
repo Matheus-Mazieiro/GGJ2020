@@ -45,6 +45,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        transform.position = new Vector3(transform.position.x, transform.position.y, 8.85f);
         float speedY = 0;
         if (isAtStair && !walking)
             speedY = Input.GetAxis("Vertical") * stairSpeed;
@@ -165,7 +166,7 @@ public class Player : MonoBehaviour
             isUnderWater = true;
             if (other.transform.parent.GetComponent<Water>() && other.transform.parent.GetComponent<Water>().fillAmount >= 30)
             {
-                redutor = speed * .7f;
+                redutor = speed * .4f;
                 transform.GetComponentInChildren<AnimController>().anims[1].gameObjects.GetComponent<AudioSource>().clip = waterStep;
             }
             else transform.GetComponentInChildren<AnimController>().anims[1].gameObjects.GetComponent<AudioSource>().clip = step;
