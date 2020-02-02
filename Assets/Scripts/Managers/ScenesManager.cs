@@ -8,8 +8,12 @@ public class ScenesManager : MonoBehaviour
     [SerializeField] bool usesFade;
     [SerializeField] float fadeDuration = 1f;
 
-    void Awake()
+    public void LoadMainMenu()
     {
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        int nextScene = 0;
+
+        LoadSceneAsync(nextScene, currentScene);
     }
 
     public void LoadNextLevel()

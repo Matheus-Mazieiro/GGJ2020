@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class DontDestroy : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public bool oneInstanceOnly = true;
+    private void Awake()
+    {
+        if (oneInstanceOnly && FindObjectOfType<ScenesManager>() != null)
+        {
+            Destroy(this.gameObject);
+        }
+    }
     void Start()
     {
         DontDestroyOnLoad(gameObject);
