@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 24156537}
   - component: {fileID: 24156536}
   - component: {fileID: 24156540}
+  - component: {fileID: 24156541}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -324,6 +325,20 @@ MonoBehaviour:
   - {fileID: 1052742179}
   - {fileID: 1460387325}
   - {fileID: 1653178953}
+--- !u!114 &24156541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24156535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9709bd6646cbed34f97d7a628eccd324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usesFade: 0
+  fadeDuration: 1
 --- !u!1 &111811531
 GameObject:
   m_ObjectHideFlags: 0
@@ -5276,7 +5291,7 @@ PrefabInstance:
     - target: {fileID: 7907835149359965435, guid: 6f5393abc2c4eb4469c7627d42db10ce,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7907835149359965435, guid: 6f5393abc2c4eb4469c7627d42db10ce,
         type: 3}
@@ -5317,6 +5332,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907835149359965435, guid: 6f5393abc2c4eb4469c7627d42db10ce,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 24156541}
+    - target: {fileID: 7907835149359965435, guid: 6f5393abc2c4eb4469c7627d42db10ce,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadNextLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907835149359965435, guid: 6f5393abc2c4eb4469c7627d42db10ce,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f5393abc2c4eb4469c7627d42db10ce, type: 3}
