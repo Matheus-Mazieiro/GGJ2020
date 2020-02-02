@@ -236,6 +236,8 @@ public class Player : MonoBehaviour
 
     public IEnumerator GoToMenu()
     {
+        FindObjectOfType<CanvasController>().SaveRecordIfBigger();
+        FindObjectOfType<CanvasController>().RefreshRecord() ;
         speed = 0;
         stairSpeed = 0;
         yield return new WaitForSeconds(5);
