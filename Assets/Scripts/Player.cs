@@ -170,8 +170,10 @@ public class Player : MonoBehaviour
             { 
                 folego -= Time.deltaTime;
                 if (folego <= 0)
+                {
                     taMorreno = true;
-
+                    StartCoroutine(GoToMenu());
+                }
             }
         }
         if (other.gameObject.layer == 11)
@@ -224,5 +226,13 @@ public class Player : MonoBehaviour
         //    hoverDoor = null;
         //    isAtDoorTrigger = true;
         //}
+    }
+
+    public IEnumerator GoToMenu()
+    {
+        speed = 0;
+        stairSpeed = 0;
+        yield return new WaitForSeconds(5);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }
