@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Hole : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class Hole : MonoBehaviour
     float startingHp;
     public float fillRatio;
     public Water water;
+
+    public UnityEvent StartOpenProcessEvent = new UnityEvent();
+
+    [HideInInspector] public bool openProcess;
 
     private void Start()
     {

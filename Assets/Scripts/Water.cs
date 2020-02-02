@@ -23,10 +23,9 @@ public class Water : MonoBehaviour
     public float fillSpeed;
 
     public float fillAmount;
-    public Hole[] holes;
     public Dor[] dores;
 
-    void Update()
+    void FixedUpdate()
     {
         transform.localScale = new Vector3(1, Mathf.Min(fillAmount / 100, 1), 1);
         FillWater(0);
@@ -45,50 +44,54 @@ public class Water : MonoBehaviour
     public void FillWater(float amount)
     {
         fillAmount += amount;
-        for (int i = 0; i < dores.Length; i++)
+        if (fillAmount > 0)
         {
-            float over = 0;
-            switch (dores[i].direction)
+            for (int i = 0; i < dores.Length; i++)
             {
-                case Dor.Side.DOWN:
-                    if (dores[i].door.isOpen && dores[i].water.fillAmount < 100)
-                    {
-                        over = amount / 2;
-                        dores[i].water.FillWater(over);
-                        fillAmount -= over;
-                    }
-                    break;
-                case Dor.Side.RIGHT:
-                    if (dores[i].door.isOpen && dores[i].water.fillAmount < fillAmount)
-                    {
-                        over = (fillAmount - dores[i].water.fillAmount) * .25f;
-                        dores[i].water.FillWater(over);
-                        fillAmount -= over;
-                    }
-                    break;
-                case Dor.Side.LEFT:
-                    if (dores[i].door.isOpen && dores[i].water.fillAmount < fillAmount)
-                    {
-                        over = (fillAmount - dores[i].water.fillAmount) * .25f;
-                        dores[i].water.FillWater(over);
-                        fillAmount -= over;
-                    }
-                    break;
-                case Dor.Side.UP:
-                    if (dores[i].door.isOpen && fillAmount > 100)
-                    {
-                        if (dores[i].direction == Dor.Side.UP && dores[i].water.fillAmount < 100)
+                float over = 0;
+                switch (dores[i].direction)
+                {
+                    case Dor.Side.DOWN:
+                        if (dores[i].door.isOpen && dores[i].water.fillAmount < 100)
                         {
-                            over = (fillAmount - 100);
+                            over = (amount != 0 ? amount : fillAmount > 0 ? fillAmount * 0.2f * Time.deltaTime: amount) / 2;
                             dores[i].water.FillWater(over);
                             fillAmount -= over;
                         }
-                    }
-                    break;
+                        break;
+                    case Dor.Side.RIGHT:
+                        if (dores[i].door.isOpen && dores[i].water.fillAmount < fillAmount)
+                        {
+                            over = (fillAmount - dores[i].water.fillAmount) * .25f;
+                            dores[i].water.FillWater(over);
+                            fillAmount -= over;
+                        }
+                        break;
+                    case Dor.Side.LEFT:
+                        if (dores[i].door.isOpen && dores[i].water.fillAmount < fillAmount)
+                        {
+                            over = (fillAmount - dores[i].water.fillAmount) * .25f;
+                            dores[i].water.FillWater(over);
+                            fillAmount -= over;
+                        }
+                        break;
+                    case Dor.Side.UP:
+                        if (dores[i].door.isOpen && fillAmount > 100)
+                        {
+                            if (dores[i].direction == Dor.Side.UP && dores[i].water.fillAmount < 100)
+                            {
+                                over = (fillAmount - 100);
+                                dores[i].water.FillWater(over);
+                                fillAmount -= over;
+                            }
+                        }
+                        break;
+                }
+
+                if (endGame && fillAmount >= 100)
+                    Debug.Log("PERDEU, MERMÃO");
+                fillAmount = Mathf.Clamp(fillAmount, -1, 101);
             }
-            if (endGame && fillAmount >= 100)
-                Debug.Log("PERDEU, MERMÃO");
-            fillAmount = Mathf.Clamp(fillAmount, 0, 100);
         }
     }
 }
