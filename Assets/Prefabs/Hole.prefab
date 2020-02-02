@@ -63,6 +63,7 @@ MonoBehaviour:
   hp: 10
   fillRatio: 0
   water: {fileID: 0}
+  holeManager: {fileID: 0}
   StartOpenProcessEvent:
     m_PersistentCalls:
       m_Calls:
@@ -111,7 +112,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

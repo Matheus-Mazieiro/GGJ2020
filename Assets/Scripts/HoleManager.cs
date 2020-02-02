@@ -17,7 +17,7 @@ public class HoleManager : MonoBehaviour
         if(count >= timePerHole)
         {
             count = 0;
-            CreateNewHole();
+            //CreateNewHole();
         }
     }
 

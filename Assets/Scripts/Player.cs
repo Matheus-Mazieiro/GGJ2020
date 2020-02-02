@@ -31,6 +31,9 @@ public class Player : MonoBehaviour
 
     public Door[] portas;
 
+    public AudioClip step;
+    public AudioClip waterStep;
+
     void Start()
     {
         myBigidbody = GetComponent<Rigidbody>();
@@ -157,7 +160,12 @@ public class Player : MonoBehaviour
         {
             isUnderWater = true;
             if (other.transform.parent.GetComponent<Water>() && other.transform.parent.GetComponent<Water>().fillAmount >= 30)
+            {
                 redutor = speed * .7f;
+                transform.GetComponentInChildren<AnimController>().anims[1].gameObjects.GetComponent<AudioSource>().clip = waterStep;
+            }
+            else transform.GetComponentInChildren<AnimController>().anims[1].gameObjects.GetComponent<AudioSource>().clip = step;
+
             if (other.transform.parent.GetComponent<Water>() && other.transform.parent.GetComponent<Water>().fillAmount >= 80)
             { 
                 folego -= Time.deltaTime;

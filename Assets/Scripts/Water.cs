@@ -54,7 +54,10 @@ public class Water : MonoBehaviour
                     case Dor.Side.DOWN:
                         if (dores[i].door.isOpen && dores[i].water.fillAmount < 100)
                         {
-                            over = (amount != 0 ? amount : fillAmount > 0 ? fillAmount * 0.2f * Time.deltaTime: amount) / 2;
+                            //over = (amount != 0 ? amount : fillAmount > 0 ? fillAmount * 0.2f * Time.deltaTime: amount) / 2;
+                            over = 0;
+                            if (dores[i].water.fillAmount <= 95)
+                                over = fillAmount * .1f;
                             dores[i].water.FillWater(over);
                             fillAmount -= over;
                         }
@@ -78,7 +81,7 @@ public class Water : MonoBehaviour
                     case Dor.Side.UP:
                         if (dores[i].door.isOpen && fillAmount > 100)
                         {
-                            if (dores[i].direction == Dor.Side.UP && dores[i].water.fillAmount < 100)
+                            if (dores[i].direction == Dor.Side.UP && dores[i].water.fillAmount < 95)
                             {
                                 over = (fillAmount - 100);
                                 dores[i].water.FillWater(over);
