@@ -34,8 +34,11 @@ public class ScenesManager : MonoBehaviour
             //fade
             FindObjectOfType<PanelFade>().FadeIn(fadeDuration);
         }
+        float audioFadeDuration = usesFade ? fadeDuration : .1f;
 
-        if (usesFade) { yield return new WaitForSeconds(fadeDuration); }
+        FindObjectOfType<AudioManager>().FadeOutBGM(fadeDuration);
+
+        if (usesFade) { yield return new WaitForSeconds(audioFadeDuration); }
 
         yield return new WaitForEndOfFrame();
 
