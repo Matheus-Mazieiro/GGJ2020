@@ -239,6 +239,7 @@ public class Player : MonoBehaviour
         stairSpeed = 0;
         yield return new WaitForSeconds(5);
         onPlayerDead?.Invoke();
+        FindObjectOfType<ScenesManager>().LoadMainMenu();
         //UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }
