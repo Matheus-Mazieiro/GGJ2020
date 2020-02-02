@@ -7,7 +7,7 @@ public class DontDestroy : MonoBehaviour
     public bool oneInstanceOnly = true;
     private void Awake()
     {
-        if (oneInstanceOnly && FindObjectOfType<ScenesManager>() != null)
+        if (FindObjectsOfType<DontDestroy>().Length > 1 && oneInstanceOnly)
         {
             Destroy(this.gameObject);
         }

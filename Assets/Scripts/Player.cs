@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         myBigidbody = GetComponent<Rigidbody>();
+        //StartCoroutine(GoToMenu());
     }
 
     void FixedUpdate()
