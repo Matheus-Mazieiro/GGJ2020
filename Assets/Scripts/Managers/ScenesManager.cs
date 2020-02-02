@@ -8,7 +8,7 @@ public class ScenesManager : MonoBehaviour
     [SerializeField] bool usesFade;
     [SerializeField] float fadeDuration = 1f;
 
-    void Start()
+    void Awake()
     {
     }
 
@@ -32,6 +32,7 @@ public class ScenesManager : MonoBehaviour
         if (usesFade)
         {
             //fade
+            FindObjectOfType<PanelFade>().FadeIn(fadeDuration);
         }
 
         if (usesFade) { yield return new WaitForSeconds(fadeDuration); }
@@ -40,10 +41,9 @@ public class ScenesManager : MonoBehaviour
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
 
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
+        while (!asyncLoad.isDone){yield return null;}
+
+        FindObjectOfType<PanelFade>().FadeOut(fadeDuration);
 
         SceneManager.UnloadSceneAsync(previousScene);
     }
