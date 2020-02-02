@@ -221,9 +221,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7907835149359965434}
   - component: {fileID: 7907835149359965437}
+  - component: {fileID: 6899077783290902684}
   - component: {fileID: 7907835149359965436}
   - component: {fileID: 7907835149359965435}
-  - component: {fileID: 6899077783290902684}
   m_Layer: 5
   m_Name: BTN
   m_TagString: Untagged
@@ -260,6 +260,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7907835149359965433}
   m_CullTransparentMesh: 0
+--- !u!114 &6899077783290902684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907835149359965433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c83f29bd2e9b7d40a24913de91c1541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 2657638503628008443}
+  onHover: {fileID: 8300000, guid: ffdbcd24c6b5f5741848ea4c8adcda29, type: 3}
+  onHoverVolume: 0.05
+  clickClip: {fileID: 8300000, guid: 3fc9b88eb92bf9e469c69559fef601c0, type: 3}
 --- !u!114 &7907835149359965436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,18 +350,3 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &6899077783290902684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7907835149359965433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c83f29bd2e9b7d40a24913de91c1541, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  audioSource: {fileID: 2657638503628008443}
-  onHover: {fileID: 8300000, guid: 3fc9b88eb92bf9e469c69559fef601c0, type: 3}
-  clickClip: {fileID: 8300000, guid: 3fc9b88eb92bf9e469c69559fef601c0, type: 3}

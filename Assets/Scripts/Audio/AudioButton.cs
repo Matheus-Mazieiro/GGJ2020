@@ -8,6 +8,7 @@ public class AudioButton : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip onHover;
+    [SerializeField] float onHoverVolume = .6f;
     [SerializeField] AudioClip clickClip;
 
     private void Awake()
@@ -18,11 +19,14 @@ public class AudioButton : MonoBehaviour, IPointerEnterHandler
 
     public void OnClick()
     {
+        audioSource.volume = 1f;
         audioSource.PlayOneShot(clickClip);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("on hover: "+name);
+        audioSource.volume = onHoverVolume;
         audioSource.PlayOneShot(onHover);
     }
 }
