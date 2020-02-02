@@ -37,6 +37,7 @@ public class HoleManager : MonoBehaviour
                 {
                     holes[i].openProcess = true;
                     holes[i].StartOpenProcessEvent.Invoke();
+                    Debug.Log("Created " + holes[i].name);
                     return;
                 }
             }

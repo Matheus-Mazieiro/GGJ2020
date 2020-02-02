@@ -12,12 +12,6 @@ public class Flush : MonoBehaviour
 
     void Update()
     {
-        /*
-        if (Input.anyKey && on)
-        {
-            FlushAct();
-        }
-        */
     }
 
     IEnumerator ToEnable()

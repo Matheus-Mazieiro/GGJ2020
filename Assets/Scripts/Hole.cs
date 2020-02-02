@@ -8,7 +8,7 @@ public class Hole : MonoBehaviour
     public bool isOpen;
     public float hp;
     float startingHp;
-    public float fillRatio;
+    public float fillRatio = 1;
     public Water water;
 
     public UnityEvent StartOpenProcessEvent = new UnityEvent();
@@ -36,6 +36,11 @@ public class Hole : MonoBehaviour
     public void RezetHP()
     {
         hp = startingHp;
+    }
+
+    public void StartOpenning()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
     }
 
     public void Openned() // Chamar no animation event quando o buraco abrir
