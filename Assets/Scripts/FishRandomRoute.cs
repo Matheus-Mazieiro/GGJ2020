@@ -22,18 +22,19 @@ public class FishRandomRoute : MonoBehaviour {
 			Gizmos.DrawSphere(routeArray[i].initialPos, 1f);
 			Gizmos.color = i == routeArray.Length - 1 ? Color.red : Color.green;
 			Gizmos.DrawSphere(routeArray[i].finalPos, 1f);
-		}
+            Gizmos.DrawLine(routeArray[i].initialPos, routeArray[i].finalPos);
+        }
 	}
 
 	IEnumerator Start() {
 		// Spawn Routine
 		while (true) {
 			yield return new WaitWhile(() => count >= limit);
-			float timeToNextSpawn = Time.timeSinceLevelLoad + Random.Range(spawnIntervalRange.x, spawnIntervalRange.y);
+			float timeToNextSpawn = Random.Range(spawnIntervalRange.x, spawnIntervalRange.y);
 			yield return new WaitForSeconds(timeToNextSpawn);
 			StartCoroutine(FishRoutine(
-				fishPrefabArray[Mathf.FloorToInt(Random.value)* fishPrefabArray.Length], 
-				routeArray[Mathf.FloorToInt(Random.value) * routeArray.Length],
+				fishPrefabArray[Mathf.FloorToInt(Random.value* fishPrefabArray.Length)], 
+				routeArray[Mathf.FloorToInt(Random.value * routeArray.Length)],
 				Random.Range(speedRange.x, speedRange.y)
 			));
 		}
