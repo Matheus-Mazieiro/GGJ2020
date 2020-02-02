@@ -15,18 +15,19 @@ public class ScenesManager : MonoBehaviour
     public void LoadNextLevel()
     {
         Debug.Log("Cena: " + SceneManager.GetActiveScene().buildIndex);
-        int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
+        int currentScene = SceneManager.GetActiveScene().buildIndex;
+        int nextScene = currentScene + 1;
         //if(nextScene == null) { Debug.Log("No scene available next"); return; }
-        LoadSceneAsync(nextScene);
+        LoadSceneAsync(nextScene, currentScene);
         //SceneManager.LoadScene(nextScene);
     }
 
-    void LoadSceneAsync(int scene)
+    void LoadSceneAsync(int scene, int previousScene)
     {
-        StartCoroutine(Internal_LoadAsyncScene(scene));
+        StartCoroutine(Internal_LoadAsyncScene(scene, previousScene));
     }
 
-    IEnumerator Internal_LoadAsyncScene(int scene)
+    IEnumerator Internal_LoadAsyncScene(int scene, int previousScene)
     {
         if (usesFade)
         {
@@ -43,6 +44,8 @@ public class ScenesManager : MonoBehaviour
         {
             yield return null;
         }
+
+        SceneManager.UnloadSceneAsync(previousScene);
     }
 
 
