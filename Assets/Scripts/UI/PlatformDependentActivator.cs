@@ -49,7 +49,7 @@ public class PlatformDependentActivator : MonoBehaviour {
 #elif UNITY_IOS
         return iOS;
 #elif UNITY_WEBGL
-        return (webDesktop && !WebGLMobileCheck.IsMobile) || (webMobile && WebGLMobileCheck.IsMobile);
+        return (webDesktop) || (webMobile);
 #else
 		return false;
 #endif
