@@ -52,6 +52,7 @@ public class ScenesManager : MonoBehaviour
 
         FindObjectOfType<PanelFade>().FadeOut(fadeDuration);
 
+        Debug.Log("Unloading scene "+previousScene); 
         SceneManager.UnloadSceneAsync(previousScene);
     }
 

@@ -1863,7 +1863,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Record:'
+  m_Text: 'High:'
 --- !u!222 &437753788
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5173,8 +5173,8 @@ MonoBehaviour:
   m_Target: {fileID: 397968476}
   m_XOffset: 0
   m_YOffset: 0
-  minY: 10
-  maxY: 10
+  minY: 8
+  maxY: 19
   useFadeIn: 1
   targetStartgamePos: {fileID: 1353788443}
   targetEndgamePos: {fileID: 1329807054}
@@ -8024,9 +8024,70 @@ Transform:
   - {fileID: 1365520452}
   - {fileID: 1139245107}
   - {fileID: 989660780}
+  - {fileID: 1734519220}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1734519219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1734519220}
+  - component: {fileID: 1734519221}
+  m_Layer: 0
+  m_Name: FishController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1734519220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734519219}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1726360746}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1734519221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734519219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aef1a81f2da3bec499c3b77149df0f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  routeArray:
+  - initialPos: {x: -87.43, y: 11.2, z: 25.3}
+    finalPos: {x: 125.41, y: 11.2, z: 31.2}
+  - initialPos: {x: -66.9, y: 44.6, z: 25.3}
+    finalPos: {x: 129.7, y: -10, z: 28.1}
+  - initialPos: {x: -134.7, y: -13.1, z: 16.9}
+    finalPos: {x: 129.7, y: -13.5, z: 22.7}
+  - initialPos: {x: 129.7, y: -13.5, z: 22.7}
+    finalPos: {x: -134.7, y: -13.1, z: 16.9}
+  fishPrefabArray:
+  - {fileID: 3265353742827859718, guid: 73897d06f0b1d0045afa697a8ac2e743, type: 3}
+  - {fileID: 6183244129703450956, guid: cd5fb09258934dc4bab05d8289e30b43, type: 3}
+  - {fileID: 2570747804547718907, guid: 95c18aee9f3f7c84cbc86e2b3de2f2b3, type: 3}
+  - {fileID: 2956368373940556488, guid: f40ca19740d15a84d9f0bd41ec10a147, type: 3}
+  speedRange: {x: 7, y: 12}
+  spawnIntervalRange: {x: 1.5, y: 3}
+  limit: 14
 --- !u!1 &1738247211
 GameObject:
   m_ObjectHideFlags: 0

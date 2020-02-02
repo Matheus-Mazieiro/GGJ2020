@@ -20,6 +20,7 @@ public class Dor
 public class Water : MonoBehaviour
 {
     public bool endGame;
+    public bool goingIntoMenu; // Probably unnecessary
     public float fillSpeed;
 
     public float fillAmount;
@@ -132,9 +133,10 @@ public class Water : MonoBehaviour
                         break;
                 }
 
-                if (endGame && fillAmount >= 100)
-                    Debug.Log("PERDEU, MERMÃO");
-
+                if (endGame && fillAmount >= 100 && !goingIntoMenu) {
+                    goingIntoMenu = true;
+                    StartCoroutine(FindObjectOfType<Player>().GoToMenu());
+                }
                 fillAmount = Mathf.Clamp(fillAmount, -1, 101);
             }
         }

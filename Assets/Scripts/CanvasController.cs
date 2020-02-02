@@ -6,15 +6,19 @@ using UnityEngine.UI;
 public class CanvasController : MonoBehaviour {
 	public Text currentTimeText;
 	public Text recordTimeText;
+    float startTime;
 
-	const string RECORD_KEY = "record";
+    float CurrentTime => Time.timeSinceLevelLoad - startTime;
+
+    const string RECORD_KEY = "record";
 
 	void Start() {
+        startTime = Time.timeSinceLevelLoad;
 		RefreshRecord();
 	}
 
 	void Update() {
-		currentTimeText.text = FormatTime(Time.timeSinceLevelLoad);
+		currentTimeText.text = FormatTime(CurrentTime);
 	}
 
 	public void RefreshRecord() {
@@ -22,8 +26,8 @@ public class CanvasController : MonoBehaviour {
 	}
 
 	public void SaveRecordIfBigger() {
-		if(Time.timeSinceLevelLoad > PlayerPrefs.GetFloat(RECORD_KEY))
-			PlayerPrefs.SetFloat(RECORD_KEY, Time.timeSinceLevelLoad);
+		if(CurrentTime > PlayerPrefs.GetFloat(RECORD_KEY))
+			PlayerPrefs.SetFloat(RECORD_KEY, CurrentTime);
 	}
 
 	static string FormatTime(float totalSeconds) {
