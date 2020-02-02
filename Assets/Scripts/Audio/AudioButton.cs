@@ -25,7 +25,6 @@ public class AudioButton : MonoBehaviour, IPointerEnterHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("on hover: "+name);
         audioSource.volume = onHoverVolume;
         audioSource.PlayOneShot(onHover);
     }
