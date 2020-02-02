@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class Player : MonoBehaviour
 
     public AudioClip step;
     public AudioClip waterStep;
+
+    [Header("Callbacks")]
+    [SerializeField] UnityEvent onPlayerDead;
 
     void Start()
     {
@@ -233,6 +237,7 @@ public class Player : MonoBehaviour
         speed = 0;
         stairSpeed = 0;
         yield return new WaitForSeconds(5);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        onPlayerDead?.Invoke();
+        //UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }

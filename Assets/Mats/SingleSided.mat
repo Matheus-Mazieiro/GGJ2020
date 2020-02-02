@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Quill
+  m_Name: SingleSided
   m_Shader: {fileID: 4800000, guid: e3432f4d9ab0c5c4a940467e15c86b21, type: 3}
   m_ShaderKeywords: _ENABLETRANSPARENCY_ON
   m_LightmapFlags: 4
@@ -57,7 +57,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _Cull: 0
+    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0

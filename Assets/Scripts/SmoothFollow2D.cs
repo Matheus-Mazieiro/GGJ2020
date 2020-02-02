@@ -46,6 +46,7 @@ public class SmoothFollow2D : MonoBehaviour
 		{
 			float targetX = m_Target.position.x + m_XOffset;
 			float targetY = m_Target.position.y + m_YOffset;
+
 			targetY = targetY < minY ? minY : targetY;
 			targetY = targetY > maxY ? maxY : targetY;
 
