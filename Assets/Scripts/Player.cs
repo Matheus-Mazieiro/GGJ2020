@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     bool flushing = false;
     bool walking = false;
     bool climbing = false;
-    bool hasPressedSpace = false;
+    bool isAtDoorTrigger = false;
     public bool isUnderWater;
     public float redutor;
     public float speed;
@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
     Rigidbody myBigidbody;
     Hole hole;
     public AnimController animCtrl;
+
+    Door hoverDoor;
 
 
     void Start()
@@ -65,6 +67,18 @@ public class Player : MonoBehaviour
 
         if (!isUnderWater && folego <= 10)
             folego += Time.deltaTime * 2;
+
+
+        if (isAtDoorTrigger)
+        {
+            if (Input.GetKeyDown(KeyCode.Space) && hoverDoor)
+            {
+                if (hoverDoor.isOpen)
+                    hoverDoor.isOpen = false;
+                else hoverDoor.isOpen = true;
+                hoverDoor.col.enabled = hoverDoor.isOpen;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -79,6 +93,12 @@ public class Player : MonoBehaviour
         if (other.gameObject.layer == 9)
         {
             hole = other.gameObject.GetComponent<Hole>();
+        }
+
+        if (other.gameObject.layer == 12)
+        {
+            hoverDoor = other.GetComponent<Door>();
+            isAtDoorTrigger = true;
         }
     }
 
@@ -122,11 +142,11 @@ public class Player : MonoBehaviour
             }
             else flushing = false;
         }
+        /*
         if(other.gameObject.layer == 12)
         {
-            if (!hasPressedSpace && Input.GetKey(KeyCode.Space) && other.GetComponent<Door>())
+            if (Input.GetKeyDown(KeyCode.Space) && other.GetComponent<Door>())
             {
-                hasPressedSpace = true;
                Door dorComp = other.GetComponent<Door>();
                 if (dorComp.isOpen)
                     dorComp.isOpen = false;
@@ -134,6 +154,7 @@ public class Player : MonoBehaviour
                 dorComp.col.enabled = dorComp.isOpen;
             }
         }
+        */
     }
 
     private void OnTriggerExit(Collider other)
@@ -154,6 +175,9 @@ public class Player : MonoBehaviour
             isUnderWater = false;
         }
         if (other.gameObject.layer == 12)
-            hasPressedSpace = true;
+        {
+            hoverDoor = null;
+            isAtDoorTrigger = true;
+        }
     }
 }

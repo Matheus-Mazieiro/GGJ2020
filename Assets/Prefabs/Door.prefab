@@ -136,8 +136,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.6758959, y: 4.8262753, z: 4.381939}
-  m_Center: {x: 0.001224399, y: 0.0070831776, z: -1.9722729}
+  m_Size: {x: 1.6758959, y: 4.8262753, z: 24.29717}
+  m_Center: {x: 0.0012243986, y: 0.0070831776, z: -2.4365797}
 --- !u!65 &8528861919014476550
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -149,5 +149,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.6392741, y: 4.8262753, z: 4.381939}
-  m_Center: {x: 0.0012243986, y: 0.0070831776, z: -1.9722729}
+  m_Size: {x: 5.2000184, y: 4.8262753, z: 23.81802}
+  m_Center: {x: 0.0012243986, y: 0.0070831776, z: -2.4435482}
