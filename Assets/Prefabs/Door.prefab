@@ -42,7 +42,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 4.58}
+  m_Size: {x: 1, y: 4.82, z: 4.58}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8528861918498961113
 GameObject:
@@ -167,7 +167,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isOpen: 0
-  debug: 0
   blockingColliderGO: {fileID: 7126831675443755204}
   meshGO: {fileID: 8528861918498961113}
   distanceToDetect: 4
