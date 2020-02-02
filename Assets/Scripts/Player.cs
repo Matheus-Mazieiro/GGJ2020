@@ -5,6 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     bool isAtStair = false;
+    bool taMorreno = false;
+    bool closingHole = false;
+    bool flushing = false;
+    bool walking = false;
+    bool climbing = false;
+    bool hasPressedSpace = false;
     public bool isUnderWater;
     public float redutor;
     public float speed;
@@ -15,6 +21,7 @@ public class Player : MonoBehaviour
     float flushCounter;
     Rigidbody myBigidbody;
     Hole hole;
+    public AnimController animCtrl;
 
 
     void Start()
@@ -25,14 +32,36 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         float speedY = 0;
-        if (isAtStair)
+        if (isAtStair && !walking)
             speedY = Input.GetAxis("Vertical") * stairSpeed;
         if(speedY != 0)
             myBigidbody.velocity = new Vector3(0, speedY, 0);
         else
             myBigidbody.velocity = new Vector3(Input.GetAxisRaw("Horizontal") * (speed - redutor), myBigidbody.velocity.y, 0);
 
+        if (myBigidbody.velocity.x != 0)
+            walking = true;
+        else walking = false;
 
+        if (isAtStair && !walking)
+            climbing = true;
+        else climbing = false;
+
+        if (taMorreno)
+            animCtrl.PlayAnim(4);
+        else if (closingHole)
+            animCtrl.PlayAnim(3);
+        else if (flushing)
+        {
+            Debug.Log("Flushing");
+            animCtrl.PlayAnim(2);
+        }
+        else if (walking)
+            animCtrl.PlayAnim(1);
+        else if (climbing)
+            animCtrl.PlayAnim(5);
+        else
+            animCtrl.PlayAnim(0);
 
         if (!isUnderWater && folego <= 10)
             folego += Time.deltaTime * 2;
@@ -57,42 +86,51 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.layer == 9)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space) && other.GetComponent<Hole>().isOpen)
             {
+                closingHole = true;
                 hole.LoseHp(fixRate);
             }
             else
             {
+                closingHole = false;
                 hole.RezetHP();
             }
         }
-        else if (other.gameObject.layer == 10)
+        if (other.gameObject.layer == 10)
         {
             isUnderWater = true;
             redutor = speed * .7f;
             if (other.transform.parent.GetComponent<Water>() && other.transform.parent.GetComponent<Water>().fillAmount >= 80)
-            {
+            { 
                 folego -= Time.deltaTime;
+                if (folego <= 0)
+                    taMorreno = true;
+
             }
         }
-        else if (other.gameObject.layer == 11)
+        if (other.gameObject.layer == 11)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space))
             {
+                flushing = true;
                 flushCounter += Time.deltaTime;
-                if(flushCounter >= flushTimer && other.GetComponent<Flush>())
+                if (flushCounter >= flushTimer && other.GetComponent<Flush>())
                 {
                     other.GetComponent<Flush>().FlushAct();
-                }                    
+                }
             }
+            else flushing = false;
         }
-        else if(other.gameObject.layer == 12)
+        if(other.gameObject.layer == 12)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && other.GetComponent<Door>())
+            if (!hasPressedSpace && Input.GetKey(KeyCode.Space) && other.GetComponent<Door>())
             {
-                Debug.Log("Door");
+                hasPressedSpace = true;
                Door dorComp = other.GetComponent<Door>();
-                dorComp.isOpen = !dorComp.isOpen;
+                if (dorComp.isOpen)
+                    dorComp.isOpen = false;
+                else dorComp.isOpen = true;
                 dorComp.col.enabled = dorComp.isOpen;
             }
         }
@@ -106,14 +144,16 @@ public class Player : MonoBehaviour
             myBigidbody.useGravity = true;
             isAtStair = false;
         }
-        else if (other.gameObject.layer == 9)
+        if (other.gameObject.layer == 9)
         {
             hole.RezetHP();
         }
-        else if (other.gameObject.layer == 10)
+        if (other.gameObject.layer == 10)
         {
             redutor = 0;
             isUnderWater = false;
         }
+        if (other.gameObject.layer == 12)
+            hasPressedSpace = true;
     }
 }
