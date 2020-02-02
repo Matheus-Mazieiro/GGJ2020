@@ -90,6 +90,7 @@ public class Water : MonoBehaviour
 
                 if (endGame && fillAmount >= 100)
                     Debug.Log("PERDEU, MERMÃO");
+
                 fillAmount = Mathf.Clamp(fillAmount, -1, 101);
             }
         }

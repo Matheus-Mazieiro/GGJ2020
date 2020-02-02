@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     bool climbing = false;
     bool isAtDoorTrigger = false;
     public bool isUnderWater;
+
     public float redutor;
     public float speed;
     public float stairSpeed;
@@ -19,15 +20,16 @@ public class Player : MonoBehaviour
     public float folego;
     public float flushTimer;
     float flushCounter;
+
     Rigidbody myBigidbody;
     Hole hole;
+
     public AnimController animCtrl;
 
     Door hoverDoor;
     public GameObject walk;
 
     public Door[] portas;
-
 
     void Start()
     {
@@ -97,22 +99,22 @@ public class Player : MonoBehaviour
             }
         }
         */
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            for (int i = 0; i < portas.Length; i++)
-            {
-                if (Vector3.Distance(transform.position, portas[i].transform.position) <= 5)
-                {
-                    if (hoverDoor)
-                    {
-                        if (hoverDoor.isOpen)
-                            hoverDoor.isOpen = false;
-                        else hoverDoor.isOpen = true;
-                        hoverDoor.col.enabled = hoverDoor.isOpen;
-                    }
-                }
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    for (int i = 0; i < portas.Length; i++)
+        //    {
+        //        if (Vector3.Distance(transform.position, portas[i].transform.position) <= 5)
+        //        {
+        //            if (hoverDoor)
+        //            {
+        //                if (hoverDoor.isOpen)
+        //                    hoverDoor.isOpen = false;
+        //                else hoverDoor.isOpen = true;
+        //                hoverDoor.col.enabled = hoverDoor.isOpen;
+        //            }
+        //        }
+        //    }
+        //}
     }
 
     private void OnTriggerEnter(Collider other)
