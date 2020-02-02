@@ -9,6 +9,8 @@ public class Door : MonoBehaviour
     [SerializeField] GameObject meshGO;
     [SerializeField] float distanceToDetect = .3f;
 
+    [SerializeField] AudioClip doorOpen;
+
     [HideInInspector] public Collider col;
 
     Player player;
@@ -28,6 +30,7 @@ public class Door : MonoBehaviour
             isOpen = !isOpen;
             blockingColliderGO.SetActive(!isOpen);
             meshGO.SetActive(!isOpen);
+            GetComponent<AudioSource>().PlayOneShot(doorOpen);
         }
     }
     //public Dor dor;
