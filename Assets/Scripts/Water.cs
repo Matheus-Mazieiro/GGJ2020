@@ -1,24 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Dor;
 
 [System.Serializable]
-public class Dor
-{
+public class Dor {
     public Door door;
-    public enum Side
-    {
+
+    public enum Side {
         RIGHT,
         LEFT,
-        DOWN, 
-        UP
+        DOWN,
+        UP,
+        HOLE,
     };
     public Side direction;
     public Water water;
 }
 
-public class Water : MonoBehaviour
-{
+public class Water : MonoBehaviour {
     public bool endGame;
     public bool goingIntoMenu; // Probably unnecessary
     public float fillSpeed;
@@ -28,52 +28,60 @@ public class Water : MonoBehaviour
     float auxDiff;
     float over;
 
+    float cachedWaterAmmount;
+
     int maxSameFrameLoop = 10;
     int loopCount = 0;
 
-    private void LateUpdate()
-    {
+    private void LateUpdate() {
         loopCount = 0;
     }
 
-    void FixedUpdate()
-    {
-        transform.localScale = new Vector3(1, Mathf.Min(fillAmount / 100, 1), 1);
-        FillWater(0);
-    }
+    Dictionary<Side, bool> sidesVisited = new Dictionary<Side, bool>() {
+        {Side.DOWN, false},
+        {Side.UP, false},
+        {Side.LEFT, false},
+        {Side.RIGHT, false},
+    };
 
-    public IEnumerator ApplyFlush(float value)
-    {
+    public bool hasInteractedUp, hasInteractedDown, hasInteractedLeft, hasInteractedRight;
 
-        while (fillAmount > value + 5)
-        {
+    //void Update() {
+     //   transform.localScale = new Vector3(1, Mathf.Min(fillAmount / 100, 1), 1);
+        //FillWater(0);
+    //}
+
+    public IEnumerator ApplyFlush(float value) {
+
+        while (fillAmount > value + 5) {
             yield return new WaitForEndOfFrame();
-            fillAmount -= (fillAmount - value) * 0.25f ;
+            fillAmount -= (fillAmount - value) * 0.25f;
         }
     }
 
-    public void FillWater(float amount)
-    {
+    public void CacheWater(float ammount, Side sideFrom) {
+        cachedWaterAmmount += ammount;
+        if(sideFrom == Side.HOLE) { return; }
 
-        fillAmount += amount;
+        sidesVisited[GetOppositeSide(sideFrom)] = true;
+    }
 
-        if(++loopCount >= maxSameFrameLoop)
-        {
-            //Debug.Log("Last minute crash prevention system...");
+    public void UpdateWater() {
+        fillAmount += cachedWaterAmmount;
+
+        if (++loopCount >= maxSameFrameLoop) {
+            Debug.Log("Last minute crash prevention system...");
             return;
         }
 
-        if (fillAmount > 0)
-        {
-            for (int i = 0; i < dores.Length; i++)
-            {
+        if (fillAmount > 0) {
+            for (int i = 0; i < dores.Length; i++) {
                 over = 0;
 
-                switch (dores[i].direction)
-                {
+                switch (dores[i].direction) {
+                    case Dor.Side.RIGHT: HandleDoorSideways(Side.RIGHT, dores[i]); break;
+                    case Dor.Side.LEFT: HandleDoorSideways(Side.LEFT, dores[i]); break;
                     case Dor.Side.DOWN: HandleDoorDown(dores[i]); break;
-                    case Dor.Side.RIGHT: HandleDoorRight(dores[i]); break;
-                    case Dor.Side.LEFT: HandleDoorLeft(dores[i]); break;
                     case Dor.Side.UP: HandleDoorUp(dores[i]); break;
                 }
 
@@ -85,66 +93,152 @@ public class Water : MonoBehaviour
                 fillAmount = Mathf.Clamp(fillAmount, -1, 101);
             }
         }
+        transform.localScale = new Vector3(1, Mathf.Min(fillAmount / 100, 1), 1);
+        cachedWaterAmmount = 0;
+    }
 
-        void HandleDoorDown(Dor door) {
-            if (door.door.isOpen && door.water.fillAmount < 100) {
-                //over = (amount != 0 ? amount : fillAmount > 0 ? fillAmount * 0.2f * Time.deltaTime: amount) / 2;
-                over = 0;
-                if (door.water.fillAmount <= 95)
-                    over = fillAmount * .1f;
-                door.water.FillWater(over);
 
+    void HandleDoorSideways(Dor.Side originalDir, Dor door) {
+        if (WasVisitedFromSide(door.direction)) { return; }
+
+        //Can this give the other side water?
+        if (door.door.isOpen && door.water.fillAmount < fillAmount) {
+            auxDiff = (fillAmount - door.water.fillAmount);
+
+            if(auxDiff < 5) {
+                over = auxDiff / 2f;
                 fillAmount -= over;
-                door.water.FillWater(over);
+                door.water.CacheWater(over, door.direction);
+                return;
             }
+
+            over = auxDiff * .1f;
+            fillAmount -= over;
+            door.water.CacheWater(over, door.direction);
+            return;
         }
 
-        void HandleDoorRight(Dor door) {
-            if (door.door.isOpen && door.water.fillAmount < fillAmount) {
-                auxDiff = (fillAmount - door.water.fillAmount);
+        //Can the other side give this side water?
+        if (door.door.isOpen && door.water.fillAmount > fillAmount) {
+            auxDiff = door.water.fillAmount - fillAmount;
 
-                over = auxDiff * .25f;
-                if (door.water.fillAmount + over > fillAmount - over &&
-                    door.water.fillAmount - over > fillAmount + over
-                ) {
-                    Debug.Log("Possibly prevented stack overflow on right side.");
-                    //Debug.Break();
-                    over = (door.water.fillAmount + over) / 2f;
-                }
-
-                fillAmount -= over;
-                door.water.FillWater(over);
+            if (auxDiff < 5) {
+                over = auxDiff / 2f;
+                fillAmount += over;
+                door.water.CacheWater(-over, door.direction);
+                return;
             }
+
+            over = auxDiff * .1f;
+            fillAmount += over;
+            door.water.CacheWater(-over, door.direction);
+            return;
         }
-
-        void HandleDoorLeft(Dor door) {
-            if (door.door.isOpen && door.water.fillAmount < fillAmount) {
-                auxDiff = (fillAmount - door.water.fillAmount);
-                over = auxDiff * .25f;
-
-                if (door.water.fillAmount + over > fillAmount - over &&
-                    door.water.fillAmount - over > fillAmount + over
-                    ) {
-                    Debug.Log("Possibly prevented stack overflow on left side.");
-                    over = (door.water.fillAmount + over) / 2f;
-                    //Debug.Break();
-                }
-
-                fillAmount -= over;
-                door.water.FillWater(over);
-            }
-        }
-
-        void HandleDoorUp(Dor door) {
-            if (door.door.isOpen && fillAmount > 100) {
-                if (door.direction == Dor.Side.UP && door.water.fillAmount < 95) {
-                    over = (fillAmount - 100);
-                    fillAmount -= over;
-                    door.water.FillWater(over);
-                }
-            }
-        }
-
 
     }
+
+    void HandleDoorRight(Dor door) {
+        if (WasVisitedFromSide(door.direction)) { return; }
+
+        if (door.door.isOpen && door.water.fillAmount < fillAmount) {
+            auxDiff = (fillAmount - door.water.fillAmount);
+
+            over = auxDiff * .25f;
+            if (door.water.fillAmount + over > fillAmount - over &&
+                door.water.fillAmount - over > fillAmount + over
+            ) {
+                Debug.Log("Possibly prevented stack overflow on right side.");
+                //Debug.Break();
+                over = (door.water.fillAmount + over) / 2f;
+            }
+
+            fillAmount -= over;
+            door.water.CacheWater(over, Side.RIGHT);
+        }
+    }
+
+    void HandleDoorLeft(Dor door) {
+        if (WasVisitedFromSide(door.direction)) { return; }
+
+        if (door.door.isOpen && door.water.fillAmount < fillAmount) {
+            auxDiff = (fillAmount - door.water.fillAmount);
+            over = auxDiff * .25f;
+
+            if (door.water.fillAmount + over > fillAmount - over &&
+                door.water.fillAmount - over > fillAmount + over
+                ) {
+                Debug.Log("Possibly prevented stack overflow on left side.");
+                over = (door.water.fillAmount + over) / 2f;
+                //Debug.Break();
+            }
+
+            fillAmount -= over;
+            door.water.CacheWater(over, Side.LEFT);
+        }
+    }
+
+    void HandleDoorDown(Dor door) {
+        if (WasVisitedFromSide(door.direction)) { return; }
+
+        //can the door down give this water?
+        if (door.door.isOpen && door.water.fillAmount > 100 && fillAmount < 100) {
+            over = door.water.fillAmount - 100;
+            door.water.CacheWater(-over, Side.UP);
+            fillAmount += over;
+            return;
+        }
+
+        //can door down receive water from this?
+        if (door.door.isOpen && door.water.fillAmount < 100) {
+            if (door.water.fillAmount <= 95) {
+                over = fillAmount * .1f;
+                fillAmount -= over;
+                door.water.CacheWater(over, Side.UP);
+                return;
+            }
+        }
+    }
+
+    void HandleDoorUp(Dor door) {
+        if (WasVisitedFromSide(door.direction)) { return; }
+
+        //can the door up give this water?
+        if (door.door.isOpen && door.water.fillAmount > 0 && fillAmount < 100) {
+            over = door.water.fillAmount *.1f;
+            door.water.CacheWater(-over, Side.UP);
+            fillAmount += over;
+            return;
+        }
+
+        //can door up receive water from this?
+        if (door.door.isOpen && door.water.fillAmount < 100 && fillAmount > 100) {
+            if (door.water.fillAmount <= 95) {
+                over = fillAmount - 100;
+                door.water.CacheWater(over, Side.UP);
+                fillAmount -= over;
+                return;
+            }
+        }
+    }
+
+    public void Reset() {
+        sidesVisited[Side.DOWN] = false;
+        sidesVisited[Side.UP] = false;
+        sidesVisited[Side.LEFT] = false;
+        sidesVisited[Side.RIGHT] = false;
+    }
+
+    bool WasVisitedFromSide(Side sideFrom) {
+        return sidesVisited[GetOppositeSide(sideFrom)];
+    }
+
+    Side GetOppositeSide(Side side) {
+        switch (side) {
+            case Side.DOWN: return Side.UP;
+            case Side.UP: return Side.DOWN; 
+            case Side.LEFT: return Side.RIGHT;
+            default: return Side.LEFT;
+        }
+    }
+
 }

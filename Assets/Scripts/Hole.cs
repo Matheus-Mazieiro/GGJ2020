@@ -21,10 +21,11 @@ public class Hole : MonoBehaviour
         startingHp = hp;
     }
 
-    private void Update()
+    public void UpdateHole()
     {
         if (isOpen)
-            water.FillWater(fillRatio);
+            water.CacheWater(fillRatio, Dor.Side.HOLE);
+            //water.FillWater(fillRatio);
     }
 
     public void LoseHp(float hp)

@@ -16,13 +16,23 @@ public class HoleManager : MonoBehaviour
         CreateNewHole();
     }
 
-    private void Update()
+    public void UpdateHoleManager()
     {
+        CreateHole();
+        UpdateHoles();
+    }
+
+    void CreateHole() {
         count += Time.deltaTime;
-        if(count >= timePerHole)
-        {
+        if (count >= timePerHole) {
             count = 0;
             CreateNewHole();
+        }
+    }
+
+    void UpdateHoles() {
+        for (int i = 0; i < holes.Length; i++) {
+            holes[i].UpdateHole();
         }
     }
 
