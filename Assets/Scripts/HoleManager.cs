@@ -1,19 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HoleManager : MonoBehaviour
 {
     public static HoleManager instance;
     public Hole[] holes;
+
+    public List<Hole> allHoles;
+    public List<Hole> openHoles;
+    public List<Hole> closedHoles;
+
     public float timePerHole;
-    public int buracosAbertos = 0;
 
     float count;
+    private System.Random random = new System.Random();
 
     private void Start()
     {
+        allHoles = holes.ToList();
+        closedHoles = allHoles;
+        InitHolePool();
         CreateNewHole();
+    }
+
+    void InitHolePool() {
+        closedHoles = allHoles;
+        Shuffle(closedHoles);
     }
 
     public void UpdateHoleManager()
@@ -31,34 +45,37 @@ public class HoleManager : MonoBehaviour
     }
 
     void UpdateHoles() {
-        for (int i = 0; i < holes.Length; i++) {
-            holes[i].UpdateHole();
+        for (int i = 0; i < openHoles.Count; i++) {
+            openHoles[i].UpdateHole();
         }
     }
 
     public void CreateNewHole()
     {
-        int index =  Random.Range(0, holes.Length - 1);
-        buracosAbertos++;
-        if(buracosAbertos < holes.Length)
+        if(closedHoles.Count > 0)
         {
-            for (int i = 0; i < holes.Length; i++)
-            {
-                if (index == i)
-                {
-                    if (holes[i].isOpen || holes[i].openProcess)
-                    {
-                        CreateNewHole();
-                        return;
-                    }
-                    else
-                    {
-                        holes[i].openProcess = true;
-                        holes[i].StartOpenProcessEvent.Invoke();
-                        return;
-                    }
-                }
-            }
+            var hole = closedHoles[0];
+            closedHoles.Remove(hole);
+            openHoles.Add(hole);
+            hole.openProcess = true;
+            hole.StartOpenning();
         }
     }
+
+    public void CloseHole(Hole hole) {
+        openHoles.Remove(hole);
+        closedHoles.Add(hole);
+    }
+
+    public void Shuffle<T>(IList<T> list) {
+        int n = list.Count;
+        while (n > 1) {
+            n--;
+            int k = random.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
+
 }

@@ -13,6 +13,12 @@ public class Hole : MonoBehaviour
     public HoleManager holeManager;
 
     public UnityEvent StartOpenProcessEvent = new UnityEvent();
+    AnimController m_animController;
+    AnimController animController { get {
+            if(m_animController == null) { m_animController = GetComponentInChildren<AnimController>(); }
+            return m_animController;
+        }
+    }
 
     [HideInInspector] public bool openProcess;
 
@@ -35,8 +41,9 @@ public class Hole : MonoBehaviour
         {
             //Destroy(this.gameObject);
             openProcess = false;
+            isOpen = false;
             transform.GetChild(0).gameObject.SetActive(false);
-            holeManager.buracosAbertos--;
+            holeManager.CloseHole(this);
         }
     }
 
@@ -48,10 +55,12 @@ public class Hole : MonoBehaviour
     public void StartOpenning()
     {
         transform.GetChild(0).gameObject.SetActive(true);
+        animController.ResetHoleAnim();
     }
 
     public void Openned() // Chamar no animation event quando o buraco abrir
     {
+        Debug.Log("Open");
         isOpen = true;
     }
 

@@ -14,6 +14,14 @@ public class AnimController : MonoBehaviour
     int actualAnim = 0;
     public AnimKit[] anims;
 
+    public void ResetHoleAnim() {
+        if (anims[0] != null)
+            anims[0].gameObjects.SetActive(true);
+        if (anims[1] != null)
+            anims[1].gameObjects.SetActive(false);
+        GetComponent<Animator>().Play("Hole", 0, 0);
+        actualAnim = 0;
+    }
 
     public void ChangeAnim()
     {
