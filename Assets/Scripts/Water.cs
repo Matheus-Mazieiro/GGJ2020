@@ -29,6 +29,10 @@ public class Water : MonoBehaviour {
     float over;
 
     float cachedWaterAmmount;
+    public bool cachedAmmountChanged = false;
+
+    float minVerticalHeightToDrip = 5;
+    public float drySpeed = 1;
 
     int maxSameFrameLoop = 10;
     int loopCount = 0;
@@ -61,7 +65,9 @@ public class Water : MonoBehaviour {
 
     public void CacheWater(float ammount, Side sideFrom) {
         cachedWaterAmmount += ammount;
-        if(sideFrom == Side.HOLE) { return; }
+        cachedAmmountChanged = true;
+
+        if (sideFrom == Side.HOLE) { return; }
 
         sidesVisited[GetOppositeSide(sideFrom)] = true;
     }
@@ -93,6 +99,7 @@ public class Water : MonoBehaviour {
                 fillAmount = Mathf.Clamp(fillAmount, -1, 101);
             }
         }
+
         transform.localScale = new Vector3(1, Mathf.Min(fillAmount / 100, 1), 1);
         cachedWaterAmmount = 0;
     }
@@ -102,15 +109,17 @@ public class Water : MonoBehaviour {
         if (WasVisitedFromSide(door.direction)) { return; }
 
         //Can this give the other side water?
-        if (door.door.isOpen && door.water.fillAmount < fillAmount) {
-            auxDiff = (fillAmount - door.water.fillAmount);
+        if (door.door.isOpen && door.water.fillAmount < fillAmount &&
+            fillAmount > minVerticalHeightToDrip) {
 
-            if(auxDiff < 5) {
-                over = auxDiff / 2f;
-                fillAmount -= over;
-                door.water.CacheWater(over, door.direction);
-                return;
-            }
+            auxDiff = fillAmount - door.water.fillAmount;
+
+            //if(auxDiff < 5) {
+            //    over = auxDiff / 2f;
+            //    fillAmount -= over;
+            //    door.water.CacheWater(over, door.direction);
+            //    return;
+            //}
 
             over = auxDiff * .1f;
             fillAmount -= over;
@@ -119,15 +128,17 @@ public class Water : MonoBehaviour {
         }
 
         //Can the other side give this side water?
-        if (door.door.isOpen && door.water.fillAmount > fillAmount) {
+        if (door.door.isOpen && door.water.fillAmount > fillAmount &&
+            door.water.fillAmount > minVerticalHeightToDrip) {
+
             auxDiff = door.water.fillAmount - fillAmount;
 
-            if (auxDiff < 5) {
-                over = auxDiff / 2f;
-                fillAmount += over;
-                door.water.CacheWater(-over, door.direction);
-                return;
-            }
+            //if (auxDiff < 5) {
+            //    over = auxDiff / 2f;
+            //    fillAmount += over;
+            //    door.water.CacheWater(-over, door.direction);
+            //    return;
+            //}
 
             over = auxDiff * .1f;
             fillAmount += over;
@@ -137,51 +148,12 @@ public class Water : MonoBehaviour {
 
     }
 
-    void HandleDoorRight(Dor door) {
-        if (WasVisitedFromSide(door.direction)) { return; }
-
-        if (door.door.isOpen && door.water.fillAmount < fillAmount) {
-            auxDiff = (fillAmount - door.water.fillAmount);
-
-            over = auxDiff * .25f;
-            if (door.water.fillAmount + over > fillAmount - over &&
-                door.water.fillAmount - over > fillAmount + over
-            ) {
-                Debug.Log("Possibly prevented stack overflow on right side.");
-                //Debug.Break();
-                over = (door.water.fillAmount + over) / 2f;
-            }
-
-            fillAmount -= over;
-            door.water.CacheWater(over, Side.RIGHT);
-        }
-    }
-
-    void HandleDoorLeft(Dor door) {
-        if (WasVisitedFromSide(door.direction)) { return; }
-
-        if (door.door.isOpen && door.water.fillAmount < fillAmount) {
-            auxDiff = (fillAmount - door.water.fillAmount);
-            over = auxDiff * .25f;
-
-            if (door.water.fillAmount + over > fillAmount - over &&
-                door.water.fillAmount - over > fillAmount + over
-                ) {
-                Debug.Log("Possibly prevented stack overflow on left side.");
-                over = (door.water.fillAmount + over) / 2f;
-                //Debug.Break();
-            }
-
-            fillAmount -= over;
-            door.water.CacheWater(over, Side.LEFT);
-        }
-    }
-
     void HandleDoorDown(Dor door) {
         if (WasVisitedFromSide(door.direction)) { return; }
 
         //can the door down give this water?
-        if (door.door.isOpen && door.water.fillAmount > 100 && fillAmount < 100) {
+        if (door.door.isOpen && door.water.fillAmount > 100 && fillAmount < 100 &&
+            door.water.fillAmount > minVerticalHeightToDrip) {
             over = door.water.fillAmount - 100;
             door.water.CacheWater(-over, Side.UP);
             fillAmount += over;
@@ -189,13 +161,15 @@ public class Water : MonoBehaviour {
         }
 
         //can door down receive water from this?
-        if (door.door.isOpen && door.water.fillAmount < 100) {
-            if (door.water.fillAmount <= 95) {
-                over = fillAmount * .1f;
-                fillAmount -= over;
-                door.water.CacheWater(over, Side.UP);
-                return;
-            }
+        if (door.door.isOpen && door.water.fillAmount < 100 &&
+            fillAmount > minVerticalHeightToDrip) {
+            //if (door.water.fillAmount <= 95) {
+            over = (fillAmount - minVerticalHeightToDrip) * .1f;
+            over = over + door.water.fillAmount > 100 ? (over + door.water.fillAmount) - 100 : over;
+            fillAmount -= over;
+            door.water.CacheWater(over, Side.UP);
+            return;
+            //}
         }
     }
 
@@ -204,7 +178,7 @@ public class Water : MonoBehaviour {
 
         //can the door up give this water?
         if (door.door.isOpen && door.water.fillAmount > 0 && fillAmount < 100) {
-            over = door.water.fillAmount *.1f;
+            over = (door.water.fillAmount - minVerticalHeightToDrip) *.1f;
             door.water.CacheWater(-over, Side.UP);
             fillAmount += over;
             return;
@@ -212,12 +186,13 @@ public class Water : MonoBehaviour {
 
         //can door up receive water from this?
         if (door.door.isOpen && door.water.fillAmount < 100 && fillAmount > 100) {
-            if (door.water.fillAmount <= 95) {
-                over = fillAmount - 100;
-                door.water.CacheWater(over, Side.UP);
-                fillAmount -= over;
-                return;
-            }
+            //if (door.water.fillAmount <= 95) {
+            over = fillAmount - 100;
+            over = over + fillAmount > 100 ? (over + fillAmount) - 100 : over;
+            door.water.CacheWater(over, Side.UP);
+            fillAmount -= over;
+            return;
+            //}
         }
     }
 
@@ -226,6 +201,14 @@ public class Water : MonoBehaviour {
         sidesVisited[Side.UP] = false;
         sidesVisited[Side.LEFT] = false;
         sidesVisited[Side.RIGHT] = false;
+
+        //move to another method
+        if (!cachedAmmountChanged && fillAmount < minVerticalHeightToDrip) {
+            fillAmount -= Time.deltaTime * drySpeed;
+            fillAmount = fillAmount <= 0 ? 0 : fillAmount;
+        }
+
+        cachedAmmountChanged = false;
     }
 
     bool WasVisitedFromSide(Side sideFrom) {

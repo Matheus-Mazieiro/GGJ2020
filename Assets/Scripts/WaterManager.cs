@@ -6,6 +6,7 @@ public class WaterManager : MonoBehaviour
 {
     [SerializeField] HoleManager holeManager;
     [SerializeField] Water[] waterListByPriority;
+    //todo initialize water dripping variable rates
 
     void Update()
     {

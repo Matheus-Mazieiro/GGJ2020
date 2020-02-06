@@ -8,7 +8,6 @@ public class HoleManager : MonoBehaviour
     public static HoleManager instance;
     public Hole[] holes;
 
-    public List<Hole> allHoles;
     public List<Hole> openHoles;
     public List<Hole> closedHoles;
 
@@ -19,14 +18,12 @@ public class HoleManager : MonoBehaviour
 
     private void Start()
     {
-        allHoles = holes.ToList();
-        closedHoles = allHoles;
         InitHolePool();
         CreateNewHole();
     }
 
     void InitHolePool() {
-        closedHoles = allHoles;
+        closedHoles = holes.ToList();
         Shuffle(closedHoles);
     }
 
