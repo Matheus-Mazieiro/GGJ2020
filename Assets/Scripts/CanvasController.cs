@@ -10,14 +10,24 @@ public class CanvasController : MonoBehaviour {
 
     float CurrentTime => Time.timeSinceLevelLoad - startTime;
 
+	public bool isEnabled = false;
+
     const string RECORD_KEY = "record";
 
 	void Start() {
-        startTime = Time.timeSinceLevelLoad;
 		RefreshRecord();
+		if (isEnabled) {
+			StartTimer();
+		}
+	}
+
+	public void StartTimer() {
+		startTime = Time.timeSinceLevelLoad;
+		isEnabled = true;
 	}
 
 	void Update() {
+        if (!isEnabled) { return; }
 		currentTimeText.text = FormatTime(CurrentTime);
 	}
 

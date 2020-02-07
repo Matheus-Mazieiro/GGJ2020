@@ -1,18 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Flush : MonoBehaviour
 {
-
     public bool on;
     public float flushValue;
     public Water[] water;
     public float timeOFF;
-
-    void Update()
-    {
-    }
+    [SerializeField] UnityEvent OnFlushed;
 
     IEnumerator ToEnable()
     {
@@ -25,9 +22,10 @@ public class Flush : MonoBehaviour
         on = false;
         foreach (Water item in water)
         {
-            item.StartCoroutine("ApplyFlush", flushValue);
+            item.StartCoroutine(item.ApplyFlush(flushValue));
         }
-        StartCoroutine("ToEnable");
+        OnFlushed?.Invoke();
+        StartCoroutine(ToEnable());
     }
 
 }

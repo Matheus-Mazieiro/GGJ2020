@@ -530,7 +530,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 183259966}
-  - component: {fileID: 183259967}
   m_Layer: 0
   m_Name: Water
   m_TagString: Untagged
@@ -556,31 +555,6 @@ Transform:
   m_Father: {fileID: 1726360746}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &183259967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 183259965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 095a53a63c0cd4da2bfb11d920984204, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  holeManager: {fileID: 221664875}
-  waterListByPriority:
-  - {fileID: 537739142}
-  - {fileID: 2141800869}
-  - {fileID: 691710063}
-  - {fileID: 1914469216}
-  - {fileID: 1436041864}
-  - {fileID: 1933110614}
-  - {fileID: 1676627611}
-  - {fileID: 1184726456}
-  - {fileID: 1606706539}
-  - {fileID: 1571648946}
-  - {fileID: 2020830333}
 --- !u!1001 &201664508
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -763,7 +737,7 @@ GameObject:
   - component: {fileID: 221664876}
   - component: {fileID: 221664875}
   m_Layer: 0
-  m_Name: ____GC____
+  m_Name: Hole Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -794,8 +768,9 @@ MonoBehaviour:
   - {fileID: 786862191}
   - {fileID: 897320608}
   - {fileID: 1018314496}
+  openHoles: []
+  closedHoles: []
   timePerHole: 20
-  buracosAbertos: 0
 --- !u!4 &221664876
 Transform:
   m_ObjectHideFlags: 0
@@ -803,11 +778,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221664874}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.621366, y: 9.197688, z: 1.570164}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.8053246, y: 6.3640146, z: -7.784322}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1133309520}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &228034722
@@ -1537,10 +1512,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 368108260}
+  - component: {fileID: 368108256}
   - component: {fileID: 368108259}
   - component: {fileID: 368108258}
   - component: {fileID: 368108257}
-  - component: {fileID: 368108256}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1562,6 +1537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTimeText: {fileID: 1275128994}
   recordTimeText: {fileID: 1670589251}
+  isEnabled: 1
 --- !u!114 &368108257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6048,6 +6024,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b466c0c6ae2599346991ff0af8307787, type: 3}
+--- !u!1 &1133309519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1133309520}
+  m_Layer: 0
+  m_Name: Managers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1133309520
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133309519}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.18395853, y: 2.8336735, z: 9.3544855}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 221664876}
+  - {fileID: 1744461988}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1139245106
 GameObject:
   m_ObjectHideFlags: 0
@@ -7375,11 +7383,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -6057140222963153312, guid: d64bf211d3d75a24b88dd43bff93e924,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 8986c261cf63c874bb4f798a040e426c, type: 2}
     - target: {fileID: -4216859302048453862, guid: d64bf211d3d75a24b88dd43bff93e924,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7435,6 +7438,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: d64bf211d3d75a24b88dd43bff93e924,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 8986c261cf63c874bb4f798a040e426c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d64bf211d3d75a24b88dd43bff93e924, type: 3}
 --- !u!1001 &1627536632
@@ -8090,7 +8098,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1726360746}
   m_Layer: 0
-  m_Name: ___SCENARY___
+  m_Name: Scenery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8234,6 +8242,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0b7f5b0498d3b4baf5d9034dcb11c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1744461987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1744461988}
+  - component: {fileID: 1744461989}
+  m_Layer: 0
+  m_Name: WaterManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1744461988
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744461987}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1133309520}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1744461989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744461987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 095a53a63c0cd4da2bfb11d920984204, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holeManager: {fileID: 221664875}
+  waterListByPriority:
+  - {fileID: 537739142}
+  - {fileID: 2141800869}
+  - {fileID: 691710063}
+  - {fileID: 1914469216}
+  - {fileID: 1436041864}
+  - {fileID: 1933110614}
+  - {fileID: 1676627611}
+  - {fileID: 1184726456}
+  - {fileID: 1606706539}
+  - {fileID: 1571648946}
+  - {fileID: 2020830333}
+  isEnabled: 1
 --- !u!1001 &1808512031
 PrefabInstance:
   m_ObjectHideFlags: 0

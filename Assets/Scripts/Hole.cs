@@ -12,6 +12,8 @@ public class Hole : MonoBehaviour
     public Water water;
     public HoleManager holeManager;
 
+    public UnityEvent OnHolePatched;
+
     public UnityEvent StartOpenProcessEvent = new UnityEvent();
     AnimController m_animController;
     AnimController animController { get {
@@ -40,6 +42,7 @@ public class Hole : MonoBehaviour
         if (this.hp <= 0)
         {
             //Destroy(this.gameObject);
+            OnHolePatched?.Invoke();
             openProcess = false;
             isOpen = false;
             transform.GetChild(0).gameObject.SetActive(false);

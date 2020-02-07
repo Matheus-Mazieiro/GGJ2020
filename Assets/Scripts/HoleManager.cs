@@ -16,6 +16,8 @@ public class HoleManager : MonoBehaviour
     float count;
     private System.Random random = new System.Random();
 
+    public bool canCreateHole = true;
+
     private void Start()
     {
         InitHolePool();
@@ -31,6 +33,12 @@ public class HoleManager : MonoBehaviour
     {
         CreateHole();
         UpdateHoles();
+    }
+
+    public void ForceCreateNewHole() {
+        canCreateHole = true;
+        count = timePerHole + 1;
+        CreateHole();
     }
 
     void CreateHole() {
@@ -49,7 +57,7 @@ public class HoleManager : MonoBehaviour
 
     public void CreateNewHole()
     {
-        if(closedHoles.Count > 0)
+        if(canCreateHole && closedHoles.Count > 0)
         {
             var hole = closedHoles[0];
             closedHoles.Remove(hole);

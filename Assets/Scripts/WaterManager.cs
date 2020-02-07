@@ -8,8 +8,15 @@ public class WaterManager : MonoBehaviour
     [SerializeField] Water[] waterListByPriority;
     //todo initialize water dripping variable rates
 
+    [SerializeField] bool isEnabled = false;
+
+    public void EnableWater() {
+        isEnabled = true;
+    }
+
     void Update()
     {
+        if (!isEnabled) { return; }
         //creates new holes and resolves all water coming from them
         holeManager.UpdateHoleManager();
         UpdateWater();

@@ -8,6 +8,9 @@ public class ScenesManager : MonoBehaviour
     [SerializeField] bool usesFade;
     [SerializeField] float fadeDuration = 1f;
 
+    public delegate void FadeInCompleted();
+    public static event FadeInCompleted OnFadeInCompleted;
+
     public void LoadMainMenu()
     {
         int currentScene = SceneManager.GetActiveScene().buildIndex;
@@ -18,7 +21,7 @@ public class ScenesManager : MonoBehaviour
 
     public void LoadNextLevel()
     {
-        Debug.Log("Cena: " + SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Scene: " + SceneManager.GetActiveScene().buildIndex);
         int currentScene = SceneManager.GetActiveScene().buildIndex;
         int nextScene = currentScene + 1;
         //if(nextScene == null) { Debug.Log("No scene available next"); return; }
@@ -43,6 +46,10 @@ public class ScenesManager : MonoBehaviour
         FindObjectOfType<AudioManager>().FadeOutBGM(fadeDuration);
 
         if (usesFade) { yield return new WaitForSeconds(audioFadeDuration); }
+
+        OnFadeInCompleted?.Invoke();
+
+        var player = FindObjectOfType<Player>();
 
         yield return new WaitForEndOfFrame();
 

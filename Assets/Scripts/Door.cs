@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Door : MonoBehaviour
 {
@@ -10,8 +11,10 @@ public class Door : MonoBehaviour
     [SerializeField] float distanceToDetect = .3f;
 
     [SerializeField] AudioClip doorOpen;
+    [SerializeField] UnityEvent OnDoorOpen;
 
     [HideInInspector] public Collider col;
+
 
     Player player;
 
@@ -23,6 +26,7 @@ public class Door : MonoBehaviour
 
     private void Update()
     {
+        if(player == null) { return; }
         if (Vector3.Distance(player.transform.position, transform.position) < distanceToDetect &&
             Input.GetKeyDown(KeyCode.Space)
             )
@@ -31,6 +35,7 @@ public class Door : MonoBehaviour
             blockingColliderGO.SetActive(!isOpen);
             meshGO.SetActive(!isOpen);
             GetComponent<AudioSource>().PlayOneShot(doorOpen);
+            OnDoorOpen?.Invoke();
         }
     }
     //public Dor dor;
