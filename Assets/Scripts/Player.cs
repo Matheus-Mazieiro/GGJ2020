@@ -94,41 +94,6 @@ public class Player : MonoBehaviour
 
         if (!isUnderWater && folego <= 10)
             folego += Time.deltaTime * 2;
-
-        //print("isAtDoorTrigger: " + isAtDoorTrigger + " |hoverDoor: " + hoverDoor);
-
-        /*
-        if (isAtDoorTrigger)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                print("apertou espaço");
-                if (hoverDoor)
-                {
-                    if (hoverDoor.isOpen)
-                        hoverDoor.isOpen = false;
-                    else hoverDoor.isOpen = true;
-                    hoverDoor.col.enabled = hoverDoor.isOpen;
-                }
-            }
-        }
-        */
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    for (int i = 0; i < portas.Length; i++)
-        //    {
-        //        if (Vector3.Distance(transform.position, portas[i].transform.position) <= 5)
-        //        {
-        //            if (hoverDoor)
-        //            {
-        //                if (hoverDoor.isOpen)
-        //                    hoverDoor.isOpen = false;
-        //                else hoverDoor.isOpen = true;
-        //                hoverDoor.col.enabled = hoverDoor.isOpen;
-        //            }
-        //        }
-        //    }
-        //}
     }
 
     private void OnTriggerEnter(Collider other)
@@ -144,12 +109,6 @@ public class Player : MonoBehaviour
         {
             hole = other.gameObject.GetComponent<Hole>();
         }
-
-        //if (other.gameObject.layer == 12)
-        //{
-        //    hoverDoor = other.GetComponent<Door>();
-        //    isAtDoorTrigger = true;
-        //}
     }
 
     private void OnTriggerStay(Collider other)
