@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
+    public int number;
+    [SerializeField] Material myMaterial;
+    PlayerInput input;
+
     bool isAtStair = false;
     bool taMorreno = false;
     bool closingHole = false;
@@ -38,13 +43,39 @@ public class Player : MonoBehaviour
     [Header("Callbacks")]
     [SerializeField] UnityEvent onPlayerDead;
 
-    bool isDying = false;
+    internal bool isDying = false;
+
+    public bool AnyAxisInput => input.HorizontalInputAxis != 0 || input.VerticalInputAxis != 0;
+    public bool DoorButtonTriggered => input.DoorButtonTriggered;
+
+    PlayerInput.Type PlayerInputType {
+        get {
+            return Input.GetJoystickNames().Length > 0 && number != 1 ? PlayerInput.Type.Joystick1 : PlayerInput.Type.Keyboard;
+        }
+    }
+
+    void Awake() {
+        if (Input.GetJoystickNames().Length + 1 < number)
+            Destroy(gameObject);
+    }
 
     void Start()
     {
         myBigidbody = GetComponent<Rigidbody>();
+        if(myMaterial != null)
+            ApplyMaterialInAllRenderers(myMaterial);
+        input = new PlayerInput(PlayerInputType);
+
         //Time.timeScale = 10f;
         //StartCoroutine(GoToMenu());
+    }
+
+    void ApplyMaterialInAllRenderers(Material mat) {
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true)) {
+            if (renderer.materials.Length == 0)
+                continue;
+            renderer.materials = Enumerable.Repeat(mat, renderer.materials.Length).ToArray();
+        }
     }
 
     void FixedUpdate()
@@ -54,11 +85,11 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 8.85f);
         float speedY = 0;
         if (isAtStair && !walking)
-            speedY = Input.GetAxis("Vertical") * stairSpeed;
+            speedY = input.VerticalInputAxis * stairSpeed;
         if(speedY != 0)
             myBigidbody.velocity = new Vector3(0, speedY, 0);
         else
-            myBigidbody.velocity = new Vector3(Input.GetAxisRaw("Horizontal") * (speed - redutor), myBigidbody.velocity.y, 0);
+            myBigidbody.velocity = new Vector3(input.HorizontalInputAxisRaw * (speed - redutor), myBigidbody.velocity.y, 0);
 
         if (myBigidbody.velocity.x != 0)
             walking = true;
@@ -79,7 +110,7 @@ public class Player : MonoBehaviour
         else if (walking)
         {
             animCtrl.PlayAnim(1);
-            walk.transform.eulerAngles = new Vector3(0, -90f * Input.GetAxis("Horizontal") - 90, 0);
+            walk.transform.eulerAngles = new Vector3(0, -90f * input.HorizontalInputAxis - 90, 0);
         }
         else if (climbing)
         {
@@ -115,7 +146,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.layer == 9)
         {
-            if (Input.GetKey(KeyCode.Space) && other.GetComponent<Hole>().isOpen)
+            if (input.CloseHoleButtonTriggered && other.GetComponent<Hole>().isOpen)
             {
                 closingHole = true;
                 hole.LoseHp(fixRate);
@@ -148,7 +179,7 @@ public class Player : MonoBehaviour
         }
         if (other.gameObject.layer == 11)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (input.FlushButtonTriggered)
             {
                 flushing = true;
                 flushCounter += Time.deltaTime;
@@ -206,6 +237,12 @@ public class Player : MonoBehaviour
         }
 
         isDying = true;
+
+        // Only continues the flow if there is no player alive
+        foreach (Player player in FindObjectsOfType<Player>())
+            if(!player.isDying)
+                yield break;
+
         FindObjectOfType<CanvasController>().SaveRecordIfBigger();
         FindObjectOfType<CanvasController>().RefreshRecord() ;
         speed = 0;

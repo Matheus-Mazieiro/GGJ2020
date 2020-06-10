@@ -11,7 +11,8 @@ public class HoleManager : MonoBehaviour
     public List<Hole> openHoles;
     public List<Hole> closedHoles;
 
-    public float timePerHole;
+    public float baseTimePerHole;
+    float timePerHole;
 
     float count;
     private System.Random random = new System.Random();
@@ -20,6 +21,7 @@ public class HoleManager : MonoBehaviour
 
     private void Start()
     {
+        timePerHole = baseTimePerHole / FindObjectsOfType<Player>().Length;
         InitHolePool();
         CreateNewHole();
     }
