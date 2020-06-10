@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     bool walking = false;
     bool climbing = false;
     bool isAtDoorTrigger = false;
+    internal bool isDestroying; // Used to won't mess with other script order due to async loading.
     public bool isUnderWater;
 
     public float redutor;
@@ -49,15 +50,27 @@ public class Player : MonoBehaviour
     public bool AnyAxisInput => input.HorizontalInputAxis != 0 || input.VerticalInputAxis != 0;
     public bool DoorButtonTriggered => input.DoorButtonTriggered;
 
+    /// <summary>
+    /// Return the input type. The number minus one.
+    /// </summary>
     PlayerInput.Type PlayerInputType {
         get {
-            return Input.GetJoystickNames().Length > 0 && number != 1 ? PlayerInput.Type.Joystick1 : PlayerInput.Type.Keyboard;
+            return new[] {
+                PlayerInput.Type.Keyboard,
+                PlayerInput.Type.Joystick1,
+                PlayerInput.Type.Joystick2,
+                PlayerInput.Type.Joystick3
+            }[number-1];
         }
     }
 
     void Awake() {
-        if (Input.GetJoystickNames().Length + 1 < number)
+        if (Input.GetJoystickNames().Length + 1 < number) {
+            isDestroying = true;
             Destroy(gameObject);
+            return;
+        }
+        input = new PlayerInput(PlayerInputType);
         myCollider = GetComponent<Collider>();
     }
 
@@ -82,7 +95,7 @@ public class Player : MonoBehaviour
 
     void IgnoreAllPlayersColliders() {
         foreach (var player in FindObjectsOfType<Player>()) {
-            if (player == this)
+            if (player == this || player.isDestroying)
                 continue;
             Physics.IgnoreCollision(myCollider, player.myCollider);
         }
@@ -152,8 +165,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
+    private void OnTriggerStay(Collider other) {
+        if (isDestroying)
+            return;
         if (other.gameObject.layer == 9)
         {
             if (input.CloseHoleButtonTriggered && other.GetComponent<Hole>().isOpen)

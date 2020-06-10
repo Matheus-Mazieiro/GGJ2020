@@ -21,7 +21,7 @@ public class HoleManager : MonoBehaviour
 
     private void Start()
     {
-        timePerHole = baseTimePerHole / FindObjectsOfType<Player>().Length;
+        timePerHole = baseTimePerHole / FindObjectsOfType<Player>().Count((p) => !p.isDestroying);
         InitHolePool();
         CreateNewHole();
     }
