@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     public float flushTimer;
     float flushCounter;
 
+    internal Collider myCollider;
     Rigidbody myBigidbody;
     Hole hole;
 
@@ -57,6 +58,7 @@ public class Player : MonoBehaviour
     void Awake() {
         if (Input.GetJoystickNames().Length + 1 < number)
             Destroy(gameObject);
+        myCollider = GetComponent<Collider>();
     }
 
     void Start()
@@ -64,7 +66,7 @@ public class Player : MonoBehaviour
         myBigidbody = GetComponent<Rigidbody>();
         if(myMaterial != null)
             ApplyMaterialInAllRenderers(myMaterial);
-        input = new PlayerInput(PlayerInputType);
+        IgnoreAllPlayersColliders();
 
         //Time.timeScale = 10f;
         //StartCoroutine(GoToMenu());
@@ -75,6 +77,14 @@ public class Player : MonoBehaviour
             if (renderer.materials.Length == 0)
                 continue;
             renderer.materials = Enumerable.Repeat(mat, renderer.materials.Length).ToArray();
+        }
+    }
+
+    void IgnoreAllPlayersColliders() {
+        foreach (var player in FindObjectsOfType<Player>()) {
+            if (player == this)
+                continue;
+            Physics.IgnoreCollision(myCollider, player.myCollider);
         }
     }
 
