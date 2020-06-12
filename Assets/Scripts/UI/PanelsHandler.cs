@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PanelsHandler : MonoBehaviour
 {
@@ -24,6 +25,25 @@ public class PanelsHandler : MonoBehaviour
         {
             go.SetActive(go == panel);
         }
+    }
+
+    public void Play() {
+        RecordPlayerInput();
+        GetComponent<ScenesManager>().LoadNextLevel();
+    }
+
+    void RecordPlayerInput() {
+        int validPlayerCount = 0;
+        var playerPanelArray = FindObjectsOfType<PlayerPanel>();
+        System.Array.Sort(playerPanelArray, (pp1, pp2) => pp1.number.CompareTo(pp2.number));
+        foreach (var playerPanel in playerPanelArray) {
+            if (playerPanel.inputType == PlayerInput.Type.None)
+                continue;
+            validPlayerCount++;
+            PlayerInput.SavePlayerInput(validPlayerCount, playerPanel.inputType);
+        }
+        for (int i = validPlayerCount; i < 4; i++)
+            PlayerInput.SavePlayerInput(i + 1, PlayerInput.Type.None);
     }
 
     public void Quit()

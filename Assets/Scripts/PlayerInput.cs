@@ -10,6 +10,8 @@ public class PlayerInput {
 
     Type type;
 
+    const string INPUT_KEY = "PlayerInput{0}";
+
     public float VerticalInputAxis {
         get {
             switch (type) {
@@ -90,5 +92,15 @@ public class PlayerInput {
 
     public PlayerInput(Type pType) {
         type = pType;
+    }
+
+    //TODO move
+    public static void SavePlayerInput(int playerNumber, Type type) => PlayerPrefs.SetInt(string.Format(INPUT_KEY, playerNumber), (int)type);
+
+    public static Type LoadPlayerInput(int playerNumber) {
+        Type ret = (Type) PlayerPrefs.GetInt(string.Format(INPUT_KEY, playerNumber));
+        if (ret == Type.None && playerNumber == 1)
+            ret = Type.Keyboard;
+        return ret;
     }
 }

@@ -50,27 +50,13 @@ public class Player : MonoBehaviour
     public bool AnyAxisInput => input.HorizontalInputAxis != 0 || input.VerticalInputAxis != 0;
     public bool DoorButtonTriggered => input.DoorButtonTriggered;
 
-    /// <summary>
-    /// Return the input type. The number minus one.
-    /// </summary>
-    PlayerInput.Type PlayerInputType {
-        get {
-            return new[] {
-                PlayerInput.Type.Keyboard,
-                PlayerInput.Type.Joystick1,
-                PlayerInput.Type.Joystick2,
-                PlayerInput.Type.Joystick3
-            }[number-1];
-        }
-    }
-
     void Awake() {
-        if (Input.GetJoystickNames().Length + 1 < number) {
+        if (PlayerInput.LoadPlayerInput(number) == PlayerInput.Type.None) {
             isDestroying = true;
             Destroy(gameObject);
             return;
         }
-        input = new PlayerInput(PlayerInputType);
+        input = new PlayerInput(PlayerInput.LoadPlayerInput(number));
         myCollider = GetComponent<Collider>();
     }
 
