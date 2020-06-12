@@ -211,6 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   number: 0
   text: {fileID: 7347113903714030852}
+  controlImage: {fileID: 6923019312676901996}
 --- !u!1 &4224033134309728649
 GameObject:
   m_ObjectHideFlags: 0
