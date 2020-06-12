@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
+    public int number;
+    [SerializeField] Material myMaterial;
+    PlayerInput input;
+
     bool isAtStair = false;
     bool taMorreno = false;
     bool closingHole = false;
@@ -12,6 +17,7 @@ public class Player : MonoBehaviour
     bool walking = false;
     bool climbing = false;
     bool isAtDoorTrigger = false;
+    internal bool isDestroying; // Used to won't mess with other script order due to async loading.
     public bool isUnderWater;
 
     public float redutor;
@@ -22,6 +28,7 @@ public class Player : MonoBehaviour
     public float flushTimer;
     float flushCounter;
 
+    internal Collider myCollider;
     Rigidbody myBigidbody;
     Hole hole;
 
@@ -38,13 +45,46 @@ public class Player : MonoBehaviour
     [Header("Callbacks")]
     [SerializeField] UnityEvent onPlayerDead;
 
-    bool isDying = false;
+    internal bool isDying = false;
+
+    public bool AnyAxisInput => input.HorizontalInputAxis != 0 || input.VerticalInputAxis != 0;
+    public bool DoorButtonTriggered => input.DoorButtonTriggered;
+
+    void Awake() {
+        if (PlayerInput.LoadPlayerInput(number) == PlayerInput.Type.None) {
+            isDestroying = true;
+            Destroy(gameObject);
+            return;
+        }
+        input = new PlayerInput(PlayerInput.LoadPlayerInput(number));
+        myCollider = GetComponent<Collider>();
+    }
 
     void Start()
     {
         myBigidbody = GetComponent<Rigidbody>();
+        if(myMaterial != null)
+            ApplyMaterialInAllRenderers(myMaterial);
+        IgnoreAllPlayersColliders();
+
         //Time.timeScale = 10f;
         //StartCoroutine(GoToMenu());
+    }
+
+    void ApplyMaterialInAllRenderers(Material mat) {
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true)) {
+            if (renderer.materials.Length == 0)
+                continue;
+            renderer.materials = Enumerable.Repeat(mat, renderer.materials.Length).ToArray();
+        }
+    }
+
+    void IgnoreAllPlayersColliders() {
+        foreach (var player in FindObjectsOfType<Player>()) {
+            if (player == this || player.isDestroying)
+                continue;
+            Physics.IgnoreCollision(myCollider, player.myCollider);
+        }
     }
 
     void FixedUpdate()
@@ -54,11 +94,11 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 8.85f);
         float speedY = 0;
         if (isAtStair && !walking)
-            speedY = Input.GetAxis("Vertical") * stairSpeed;
+            speedY = input.VerticalInputAxis * stairSpeed;
         if(speedY != 0)
             myBigidbody.velocity = new Vector3(0, speedY, 0);
         else
-            myBigidbody.velocity = new Vector3(Input.GetAxisRaw("Horizontal") * (speed - redutor), myBigidbody.velocity.y, 0);
+            myBigidbody.velocity = new Vector3(input.HorizontalInputAxisRaw * (speed - redutor), myBigidbody.velocity.y, 0);
 
         if (myBigidbody.velocity.x != 0)
             walking = true;
@@ -79,7 +119,7 @@ public class Player : MonoBehaviour
         else if (walking)
         {
             animCtrl.PlayAnim(1);
-            walk.transform.eulerAngles = new Vector3(0, -90f * Input.GetAxis("Horizontal") - 90, 0);
+            walk.transform.eulerAngles = new Vector3(0, -90f * input.HorizontalInputAxis - 90, 0);
         }
         else if (climbing)
         {
@@ -111,11 +151,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
+    private void OnTriggerStay(Collider other) {
+        if (isDestroying)
+            return;
         if (other.gameObject.layer == 9)
         {
-            if (Input.GetKey(KeyCode.Space) && other.GetComponent<Hole>().isOpen)
+            if (input.CloseHoleButtonTriggered && other.GetComponent<Hole>().isOpen)
             {
                 closingHole = true;
                 hole.LoseHp(fixRate);
@@ -148,7 +189,7 @@ public class Player : MonoBehaviour
         }
         if (other.gameObject.layer == 11)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (input.FlushButtonTriggered)
             {
                 flushing = true;
                 flushCounter += Time.deltaTime;
@@ -206,6 +247,12 @@ public class Player : MonoBehaviour
         }
 
         isDying = true;
+
+        // Only continues the flow if there is no player alive
+        foreach (Player player in FindObjectsOfType<Player>())
+            if(!player.isDying)
+                yield break;
+
         FindObjectOfType<CanvasController>().SaveRecordIfBigger();
         FindObjectOfType<CanvasController>().RefreshRecord() ;
         speed = 0;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,27 +17,27 @@ public class Door : MonoBehaviour
     [HideInInspector] public Collider col;
 
 
-    Player player;
+    Player[] playerArray;
 
     private void Start()
     {
         col = GetComponent<Collider>();
-        player = FindObjectOfType<Player>();
+        playerArray = FindObjectsOfType<Player>();
     }
 
     private void Update()
     {
-        if(player == null) { return; }
-        if (Vector3.Distance(player.transform.position, transform.position) < distanceToDetect &&
-            Input.GetKeyDown(KeyCode.Space)
-            )
-        {
+        if (IsPlayerTryingToOpenDoor()){
             isOpen = !isOpen;
             blockingColliderGO.SetActive(!isOpen);
             meshGO.SetActive(!isOpen);
             GetComponent<AudioSource>().PlayOneShot(doorOpen);
             OnDoorOpen?.Invoke();
         }
+    }
+
+    bool IsPlayerTryingToOpenDoor() {
+        return playerArray.Any((p) => p!=null && p.DoorButtonTriggered && Vector3.Distance(p.transform.position, transform.position) < distanceToDetect);
     }
     //public Dor dor;
 }

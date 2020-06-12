@@ -13,8 +13,10 @@ public class FadeInDisableList : MonoBehaviour
 
     void OnFadeInCompleted() {
         foreach (var go in disableOnFadeInComplete) {
-            go.SetActive(false);
-            Destroy(go);
+            if (go != null) {
+                go.SetActive(false);
+                Destroy(go);
+            }
         }
     }
 }

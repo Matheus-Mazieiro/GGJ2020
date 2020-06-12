@@ -15,7 +15,7 @@ public class SmoothFollow2D : MonoBehaviour
 
 	private float margin = 0.1f;
 
-	bool regularMode = false;
+	public bool regularMode { get; private set; } = false;
 	[Header("Tween pos")]
 	public bool useFadeIn = true;
 	float endGameDuration = 3f;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class FTUEManager : MonoBehaviour
 {
@@ -29,6 +30,8 @@ public class FTUEManager : MonoBehaviour
 
     Dictionary<TutorialState, GameObject> stateToPanelDic;
 
+    Player[] playerArray;
+
     [SerializeField] TutorialState state = TutorialState.started;
 
     public float firstMessageTime = 5f;
@@ -38,6 +41,9 @@ public class FTUEManager : MonoBehaviour
     public bool walkedTooEarly;
     float earlyWalkTime;
     float remainingMessageTime;
+
+
+    bool AnyPlayerAxisPressed => playerArray.Any((p) => p!=null && p.AnyAxisInput);
 
     private void Awake() {
         stateToPanelDic = new Dictionary<TutorialState, GameObject>() {
@@ -49,6 +55,8 @@ public class FTUEManager : MonoBehaviour
             {TutorialState.fixedHole, TrainingDonePanel },
             {TutorialState.done, TrainingDonePanel }
         };
+
+        playerArray = FindObjectsOfType<Player>();
 
         EnablePanelForState(state);
 
@@ -119,7 +127,7 @@ public class FTUEManager : MonoBehaviour
 
     void CheckHasWalked() {
         if(state >= TutorialState.walked) { return; }
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0) {
+        if (AnyPlayerAxisPressed) {
 
             if(state == TutorialState.started) {
                 walkedTooEarly = true;
