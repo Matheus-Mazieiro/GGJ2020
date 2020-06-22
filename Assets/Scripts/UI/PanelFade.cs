@@ -8,26 +8,27 @@ using UnityEngine.UI;
 public class PanelFade : MonoBehaviour
 {
     int multiplier = -1;
+    float initialXAnchor;
 
-    private void Awake()
-    {
-        GetComponent<RectTransform>().anchoredPosition = new Vector2(Screen.width * transform.localScale.x, 0);
-    }
-
-    void Start(){
+    void Start() {
+        initialXAnchor = (GetComponentInParent<CanvasScaler>().referenceResolution.x + GetComponent<RectTransform>().rect.width*transform.localScale.x) / 2f;
+        GetComponent<RectTransform>().anchoredPosition = new Vector2(initialXAnchor, 0);
         //DontDestroyOnLoad(GetComponentInParent<Canvas>().gameObject);
         //FadeIn(2f);
+        Debug.Log("Start anchoredPosition=" + GetComponent<RectTransform>().anchoredPosition); //remove
     }
 
     public void FadeIn(float duration) {
+        Debug.Log("FadeIn anchoredPosition=" + GetComponent<RectTransform>().anchoredPosition); //remove
         //Debug.Log("Fade in");
         Fade(Vector2.zero, duration);
     }
     
     public void FadeOut(float duration) {
+        Debug.Log("FadeOut anchoredPosition=" + GetComponent<RectTransform>().anchoredPosition); //remove
         //var vect2 = Screen.width;
         //Debug.Log("Fade out");
-        Fade(new Vector2(multiplier * Screen.width * transform.localScale.x, 0), duration);
+        Fade(new Vector2(multiplier * initialXAnchor, 0), duration);
         multiplier *= -1;
     }
 
